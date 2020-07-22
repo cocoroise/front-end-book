@@ -1,7 +1,12 @@
   * [**html**](docs/html/README.md)
+      * [dom介绍和使用](docs/html/dom.md)
+      * [事件冒泡，捕获和委托](docs/html/event-bubble.md)
+      * [html常见问题](docs/html/questions.md)
 
 
   * [**css**](docs/css/README.md)
+
+      * [css常见问题](docs/css/questions.md)
 
 
   * [**javascript**](docs/javascript/README.md)
@@ -24,7 +29,7 @@
 
   * [**前端工程化**](docs/工程化/README.md)
     *  [Docker介绍和使用](docs/工程化/docker.md)
-    *  [lerna使用](docs/工程化/lerna.md)
+    *  [lerna使用](docs/工程化/lerna使用.md)
 
   * [**浏览器原理**](docs/浏览器/README.md)
     * [浏览器知识收集](docs/浏览器/浏览器知识点整理.md)  
@@ -40,7 +45,7 @@
 
 
   * [**工作记录**](docs/work/README.md)
-    * [npm link命令的使用](docs/network/npmLink.md)
+    * [npm link命令的使用](docs/work/npmLink.md)
     * [VueRouter history模式下的nginx配置](docs/work/vue-router-history.md)
 
 
