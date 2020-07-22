@@ -1,6 +1,6 @@
 # composition-api reactive探究
 
-### 💛前言
+### 💛  前言
 
 今天工作的时候遇到一个奇怪的问题，在reactive里定义的数组不能被响应式，比如说
 
@@ -36,7 +36,7 @@ const state = reactive({
 })
 ```
 
-### 🧡提问时间
+### 🧡  提问时间
 
 1. reactive关于数组这块是怎么处理的，为什么跟对象处理不一样
 2. vue2里对于响应式的处理与新的函数式api有何不同
@@ -44,7 +44,7 @@ const state = reactive({
 
 带着这些问题，先往下看代码。
 
-### 💙reactive流程
+### 💙  reactive流程
 
 compositon-api有关于封装响应式数据的代码就在`src/reactive`里，从`index`开始看，这里只是暴露了一些api
 
@@ -259,7 +259,7 @@ export function defineAccessControl(target: AnyObject, key: any, val?: any) {
 }
 ```
 
-### 💚ref实现分析
+### 💚  ref实现分析
 
 看看ref的定义
 
@@ -357,7 +357,7 @@ export function toRef<T extends object, K extends keyof T>(object: T, key: K): R
 }
 ```
 
-### 🖤shallowReactive的实现
+### 🖤  shallowReactive的实现
 
 这个api的作用是 只为某个对象的私有（第一层）属性创建浅层的响应式代理，不会对“属性的属性”做深层次、递归地响应式代理，而只是保留原样。
 
@@ -435,7 +435,7 @@ export function shallowReactive<T extends object = any>(obj: T): T {
 
 可以看到实现浅响应式对象的方式跟普通的差不多，只不过只为第一层的对象添加响应式的属性，不再往深层的对象里添加响应式的方法，而是直接就搜集依赖和变更通知了。
 
-### 💜回答时间
+### 💜  回答时间
 
 1. reactive关于数组这块是怎么处理的，为什么跟对象处理不一样
 

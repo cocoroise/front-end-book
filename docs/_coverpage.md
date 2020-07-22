@@ -1,4 +1,4 @@
-<img width="160px" style="border-radius: 50%" bor src="https://nodejsred.oss-cn-shanghai.aliyuncs.com/nodejs_roadmap-logo.jpeg?x-oss-process=style/may">
+<img width="60%" src="http://image.cocoroise.cn/前端知识大纲.png">
 
 #  前端知识点小册
 
@@ -6,7 +6,7 @@
 - 复习
 - 总结
 - 记录
-- 方式
+- 反思
 - ...
 
 [cocoroise的花园](http://cocoroise.cn/)

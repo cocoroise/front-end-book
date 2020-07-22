@@ -1,6 +1,6 @@
 # Composition Watcher源码解析
 
-### 🚗前言
+### 🚗 前言
 
 使用新出的vue的compositionApi时，发现watch的使用有和以前不同之处了
 
@@ -30,7 +30,7 @@ setTimeout(() => {
 
 之前watch需要手动指定某个值的名称，传入一个回调函数，但是现在传入的是一个匿名函数，然后可以在第二个参数里获取到新的值，为什么现在要选择传入一个函数的方式来指定watch的数据呢？
 
-### 🛵流程分析
+### 🛵 流程分析
 
 新的api有两个方法可以进行监听操作，watchEffect和watch，唯一的不同之处就是watch可以监听多个值watchEffect只能监听一个。这里我们只看watchEffect的代码。
 
@@ -61,7 +61,7 @@ export type WatchStopHandle = () => void;
 
 定义都很简单，watchEffect实际上就是个回调函数，optionsBase现在也只有个配置项，就是配置watch的触发时机。而终止watch的函数更简单了，就是个普通的void函数而已。重点看看实现方法把，代码里写的很清楚，先通过getWatchEffectOption获取到这个监听的配置项，然后通过getWatcherVM拿到当前vue的实例，最后为配置项创建一个watcher。
 
-### 🏰getWatchEffectOption
+### 🏰 getWatchEffectOption
 
 ```typescript
 function getWatchEffectOption(options?: Partial<WatchOptions>): WatchOptions {
@@ -78,7 +78,7 @@ function getWatchEffectOption(options?: Partial<WatchOptions>): WatchOptions {
 
 这个函数很简单，就是为每个watcher创建一个配置，目前现有的配置就是immediate，deep，和flush。
 
-### ⛵getWatcherVM
+### ⛵ getWatcherVM
 
 ```typescript
 function getWatcherVM() {
@@ -137,7 +137,7 @@ export function getCurrentVM(): ComponentInstance | null {
 
 来新建一个。然后再检查是否有watchEnv，这个watchEnv其实就是挂在vm上的一个数组，因为有不同的watch时机，所以分成 **WatcherPreFlushQueueKey** 和 **WatcherPostFlushQueueKey**数组。
 
-### 🛁createWatcher
+### 🛁 createWatcher
 
 做完上下文的检查工作之后，就要开始最重要的一步了，就是创建watcher，也是解答今天提出问题的关键性步骤。
 
@@ -363,7 +363,7 @@ function queueFlushJob(vm: any, fn: () => void, mode: Exclude<FlushMode, 'sync'>
 }
 ```
 
-### 🌥总结
+### 🌥 总结
 
 这个新出的api实际上使用的watcher方法也是原本vue自己实现的$watcher方法，但是经过了一些封装。
 
@@ -378,4 +378,4 @@ watcher.get = createScheduler(originGet);
 
 源码也不复杂，推荐一看啦。
 
-😇最后附上官方文档:[watchEffect](https://composition-api.vuejs.org/zh/api.html#watcheffect)
+😇 最后附上官方文档:[watchEffect](https://composition-api.vuejs.org/zh/api.html#watcheffect)

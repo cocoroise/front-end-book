@@ -7,6 +7,8 @@
   * [**css**](docs/css/README.md)
 
       * [css常见问题](docs/css/questions.md)
+      * [css-flex布局](docs/css/flex.md)
+      * [移动端适配](docs/css/移动端适配.md)
 
 
   * [**javascript**](docs/javascript/README.md)
@@ -33,7 +35,8 @@
 
   * [**浏览器原理**](docs/浏览器/README.md)
     * [浏览器知识收集](docs/浏览器/浏览器知识点整理.md)  
-
+* [页面回流重绘及优化](docs/浏览器/reflow.md)  
+    
   * [**常用笔记**](docs/note/README.md)
     * [Gitlab ci/cd的使用](docs/note/Gitlab-ci-cd的使用.md) 
     * [《分布式缓存-原理，架构及Go语言实现》总结](docs/note/cache-book.md) 
