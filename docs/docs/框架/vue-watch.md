@@ -278,13 +278,13 @@ function _traverse (val: any, seen: ISet) {
 
 依赖收集的简单的流程如下图：
 
-![](http://image.cocoroise.cn/截屏2020-07-02 上午12.44.17.png)
+<img src="http://image.cocoroise.cn/vue-watch1.png" style="zoom:50%;" />
 
 
 
 派发更新的大致流程如下：
 
-![](http://image.cocoroise.cn/截屏2020-07-02 上午1.10.14.png)
+<img src="http://image.cocoroise.cn/vue-watch2.png" style="zoom:67%;" />
 
 总结一下，在vue初始化的时候，会调用initState 来给所有data添加getter和setter，getter里会调用 `dep.depend()`进行依赖的收集，然后当前这个数据的watcher会被保存进dep.subs数组里。
 

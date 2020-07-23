@@ -70,7 +70,7 @@ http-proxy 库将转发规则分为两部分加以配置，context 用于匹配�
 1. 创建config，通过`createConfig`函数调用创建config的工厂类，主要有`options`和 `context`;
 2. 配置logger实例
 3. 通过 `http-proxy`创建代理服务器
-4. 最中心的一个步骤， `createPathRewriter`会根据 `options.pathRewrite`生成对应转化的路径
+4. 最核心的一个步骤， `createPathRewriter`会根据 `options.pathRewrite`生成对应转化的路径
 5. 通过 `handler`创建监听函数，监听 `http-proxy`的事件
 6. 创建转发 http, https, websocket 请求的代理中间件
 

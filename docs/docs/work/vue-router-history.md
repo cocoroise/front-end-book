@@ -1,7 +1,9 @@
 # VueRouter history模式下的nginx配置
 
-###  base
->  vue-router 或者 react-router 路由模式有两种，一种是使用hash来控制视图的跳转。另一种是使用 history 模式，使用 history.pushState API 来控制视图的跳转。使用 hash 的缺点是路由的样子会是 #/a/b 这种样子，而且在微信分享时会出现问题。所以推荐使用history模式的路由。
+###  vue-router介绍
+vue-router 或者 react-router 路由模式有两种，一种是使用hash来控制视图的跳转。另一种是使用 history 模式，使用 history.pushState API 来控制视图的跳转。使用 hash 的缺点是路由的样子会是 #/a/b 这种样子，而且在微信分享时会出现问题。所以推荐使用history模式的路由。
+
+### 背景
 
 我们都知道`vue router`的路由模式有两种，默认是`hash`模式，如果指定了`mode:history`就会使用`history`模式，但是前几天在一个项目里把路由模式改成`history`模式的时候，却遇到了nginx配置不正确的问题。
 

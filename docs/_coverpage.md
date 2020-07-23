@@ -1,4 +1,4 @@
-<img width="60%" src="http://image.cocoroise.cn/前端知识大纲.png">
+<img src="http://image.cocoroise.cn/前端知识大纲.png" style="width:50%;" />
 
 #  前端知识点小册
 

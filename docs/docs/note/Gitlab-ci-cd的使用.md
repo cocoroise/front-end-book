@@ -4,11 +4,17 @@
 GitLab提供持续集成服务。如果将.gitlab-ci.yml文件添加到存储库的根目录，并将GitLab项目配置为使用Runner，则每次提交或推送都会触发pipelin。默认有三个流水线,build->test->deploy.(tips:gitlab-runner比较吃内存,建议不要安装到同一台服务器上.)   
 一条流水线有多个工序(stage),一个工序有多个作业(jobs).   
 
+
+
 ### yml文件介绍
+
 .gitlab-ci.yml文件是用来配置GitLab CI进行构建流程的配置文件，其采用YAML语法,所以你需要额外注意要用空格来代替缩进，而不是Tabs。用`Stages`关键字来定义构建过程中的四个阶段。
 `stages`会安装顺序进行，完成一个之后下一个才会开始，如果有一个失败整个`Pipeline`都算失败，全部成功才算构建成功。`caches`字段是用来指定下面将要进行的job任务中需要共享的文件目录,如果没有，每个`Job`开始的时候，GitLab Runner都会删掉.gitignore里面的文件。`Jobs`会并行执行，只有一个`Stage`中所有的`Jobs`都成功这个`Stages`才算成功。
 
+
+
 ### yml文件示例
+
 ````
 # stages用来定义构建过程中的四个阶段 init->check->build->deploy
 stages:
@@ -68,7 +74,10 @@ dev_deploy:
   only:
   - dev
 ````
+
+
 ### runner的配置
+
   1. [安装gitlab-runner或者gitlab-ci-multiple-runner](https://juejin.im/post/5cb92a3ae51d456e5f76c485)
   2. runner register，把gitlab上面的token和url配置进去
   3. runner start
@@ -88,7 +97,10 @@ dev_deploy:
    ssh -p PORT any_name
    ````
 
+
+
 ### 作业关键字
+
 |    Keyword    | Required |                           Description                           |
 | :-----------: | :------: | :-------------------------------------------------------------: |
 |    script     |   yes    |                     Runner执行的命令或脚本                      |
@@ -124,6 +136,8 @@ dev_deploy:
 ### 总结 
 &emsp; 就我贫瘠的知识只知道两种上线方法，一个就是运用webhook这样的东西，简单的脚本，直接把打包好的静态资源复制到nginx对应的目录下。后端还要麻烦一点，可能服务器上要安装一个tomcat或者docker，docker里拉一个tomcat的镜像，再进行操作。另外一种就是运用这种比较自动的方式，通过写一份配置文件来进行部署，但是jenkins没有回滚的功能很让人疑惑。如果要用到别的管理docker镜像的工具的话，那上线也太麻烦了一点（之前实习的公司就是用的jenkins和rancher，需要手动复制jenkins打包出来的docker镜像地址到rancher上，但是这样可以有个管理镜像的功能）😜。   
 &emsp; 另外公司在用的一个叫蜂巢的东西，用了部分的k8s，意图是想解决混乱的测试环境问题。比如说A项目和B项目想进行联调，这里需要用到C项目的公共测试环境，但是这个时候如果C项目挂了，A和B的联调就同时进行不下去。如果在联调的时候能创建一个单独的环境，或者说C的可用的镜像，然后放在只有A和B和C的一个容器里，这样就能愉快的进行联调了。
+
+
 
 ### 参考资料
 - [Gitlab官方文档](https://docs.gitlab.com/ce/ci/yaml/README.html)

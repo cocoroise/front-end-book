@@ -14,9 +14,9 @@
 - async & await
 - 。。。
 
-### 🍄开始
 
-#### 1️⃣ EventEmitter
+
+### 1️⃣ EventEmitter
 
 EventEmitter是一个事件触发器，在node里有原生的实现，在fs,net,koa里都有用到。
 
@@ -197,7 +197,7 @@ listener get----> 2
 
 
 
-#### 2️⃣ Bind&call&apply 
+### 2️⃣ Bind&call&apply 
 
 这几个函数的作用都是手动改变函数内this的指向，
 
@@ -249,7 +249,7 @@ Function.prototype.bind = function () {
 
 
 
-#### 3️⃣ new的实现
+### 3️⃣ new的实现
 
 1. 使用父原型创建一个新的对象
 
@@ -310,7 +310,7 @@ let f1 = new Foo();
 
 
 
-#### 4️⃣ koa-compose
+### 4️⃣ koa-compose
 
 看过koa源码的人应该知道，compose方法是koa里比较核心的一个点，但是它的实现也并不复杂。它的作用主要是把中间价串联起来，通过用户手动调用 next 的方式，控制中间件的执行。
 
@@ -400,7 +400,7 @@ return Promise.resolve(fn(context,dispatch.bind(null,i+1)))
 
 
 
-#### 5️⃣ vue-router
+### 5️⃣ vue-router
 
 router是我们经常使用的vue全家桶之一，其实它的实现原理也不难。核心就是监听浏览器的跳转事件，匹配对应的组件进行渲染。一般有两种方式可以使用，hash模式和history模式。hash模式监听`hashchange`事件，history模式监听history api的`pushState`方法。
 
@@ -427,7 +427,7 @@ class Routers {
 
 
 
-#### 6️⃣ throttle&debounce
+### 6️⃣ throttle&debounce
 
 节流和防抖，前端很常见的功能了。节流主要是限制事件次数 比如 **一秒只触发一次事件** ，防抖则是为了 **探测事件发生完的空档期**，比如说用户输入完1S之后向后台请求接口。
 
@@ -489,7 +489,7 @@ $("#input").addEventListener("change",debounce(handler,1000))
 
 
 
-#### 7️⃣ promise
+### 7️⃣ promise
 
 promise也是我们经常使用到的一个工具，只不过现在我们一般都用更方便的 async 和 await 来做异步请求了，但是async 和 await也只是promise的一个语法糖而已，知道内部的实现还是挺有必要的。先来看看promise有哪些功能，如何使用的，再来探究它的数据结构吧。
 
@@ -729,7 +729,7 @@ async1()
 
 
 
-#### 8️⃣ async & await
+### 8️⃣ async & await
 
 async和await是es6里面Generator的语法糖。与之不同的是，Generator需要手动调用`next`方法执行下一个迭代器里的迭代，而async不用，它自动帮你调用了next函数。先来看看Generator是怎么使用的吧。
 
