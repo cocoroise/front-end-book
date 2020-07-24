@@ -15,6 +15,9 @@
 
       * [原型链介绍](docs/javascript/prototype.md)
       * [ES6笔记](docs/javascript/es6.md)
+      * [js垃圾回收机制](docs/javascript/cash.md)
+      * [函数作用域链](docs/javascript/作用域链.md)
+    * [js常见面试题](docs/javascript/questions.md)
 
 
   * [**框架**](docs/框架/README.md)
