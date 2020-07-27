@@ -1,4 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto+Mono|Source+Sans+Pro:300,400,600");
+:root {
+  --theme-color: #dec6fb;
+}
 * {
   -webkit-font-smoothing: antialiased;
   -webkit-overflow-scrolling: touch;
@@ -195,7 +198,7 @@ main.hidden {
   transition: all 0.3s;
 }
 .anchor span {
-  color: #34495e;
+  color: #595959;
 }
 .anchor:hover {
   text-decoration: underline;
@@ -296,19 +299,32 @@ body.sticky .sidebar-toggle {
   position: fixed;
 }
 .content {
+  height: 100%;
   padding-top: 60px;
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 300px;
-  transition: left 0.25s ease;
+  transition: left 0.25s ease-in-out;
 }
 .markdown-section {
   margin: 0 auto;
-  max-width: 80%;
-  padding: 30px 15px 40px;
+  max-width: 86%;
+  padding: 24px 48px;
   position: relative;
+  line-height: 1.75;
+  color: #595959;
+  /* font-family: Optima-Regular, Optima, PingFangTC-Light, PingFangSC-light,
+    PingFangTC-light; */
+  background-image: linear-gradient(
+      90deg,
+      rgba(50, 0, 0, 0.05) 3%,
+      rgba(0, 0, 0, 0) 3%
+    ),
+    linear-gradient(360deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%);
+  background-size: 20px 20px;
+  background-position: center center;
 }
 .markdown-section > * {
   box-sizing: border-box;
@@ -363,7 +379,7 @@ body.sticky .sidebar-toggle {
   border-radius: 100%;
   color: #fff;
   content: "!";
-  font-family: Dosis, Source Sans Pro, Helvetica Neue, Arial, sans-serif;
+  /* font-family: Dosis, Source Sans Pro, Helvetica Neue, Arial, sans-serif; */
   font-size: 14px;
   font-weight: 700;
   left: -12px;
@@ -647,6 +663,9 @@ body {
   font-size: 1.5rem;
   margin: 40px 0 0.6rem;
 }
+.markdown-section h3 a {
+  border-bottom: 2px solid #dec6fb;
+}
 .markdown-section h4 {
   font-size: 1.25rem;
 }
@@ -665,7 +684,11 @@ body {
 .markdown-section p,
 .markdown-section ul {
   line-height: 1.6rem;
-  word-spacing: 0.05rem;
+  /* word-spacing: 0.05rem; */
+  color: #595959;
+  margin: 10px 0px;
+  letter-spacing: 2px;
+  font-size: 16px;
 }
 .markdown-section ol,
 .markdown-section ul {
@@ -794,7 +817,7 @@ body {
   color: #525252;
   display: block;
   font-family: Roboto Mono, Monaco, courier, monospace;
-  font-size: 0.8rem;
+  font-size: 14px;
   line-height: inherit;
   margin: 0 2px;
   max-width: inherit;

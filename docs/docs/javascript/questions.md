@@ -14,3 +14,4 @@
      Symbol 
    - 和 Object
 
+2. 
