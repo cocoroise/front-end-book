@@ -62,7 +62,9 @@ IE7 重写了垃圾收集例程。新的工作方式为：触发垃圾收集的�
 
 ### V8 引擎的垃圾回收机制
 
-在JavaScript脚本中，绝大多数对象的生存期很短，只有部分对象的生存期较长。所以，V8 中的垃圾回收主要使用的是 **分代回收** (Generational collection)机制。
+V8是有内存限制的，因为它最开始是为浏览器设计的，不太可能遇到大量内存的使用场景。关键原因还是垃圾回收所导致的线程暂停执行的时间过长。根据官方说法，以1.5G内存为例，V8一次小的垃圾回收需要50ms，而一次非增量的，即全量的垃圾回收更需要一秒。这显然是不可接受的。因此V8限制了内存使用的大小，但是Node.js是可以通过配置修改的，更好的做法是使用`Buffer`对象，因为`Buffer`的内存是底层C++分配的，不占用JS内存，所以他也就不受V8限制。
+
+V8 中的垃圾回收主要使用的是 **分代回收** (Generational collection)机制。
 
 V8 引擎将保存对象的 **堆** (heap) 进行了分代:
 
@@ -88,3 +90,5 @@ V8 引擎将保存对象的 **堆** (heap) 进行了分代:
 [内存管理 - MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Memory_Management)
 
 [JavaScript 垃圾回收机制](https://juejin.im/post/5cf4d12ee51d45775746b8ea)
+
+[JavaScript的内存管理](https://juejin.im/post/5e2155cee51d4552455a8878)

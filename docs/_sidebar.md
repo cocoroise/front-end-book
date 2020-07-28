@@ -16,8 +16,8 @@
       * [原型链介绍](docs/javascript/prototype.md)
       * [ES6笔记](docs/javascript/es6.md)
       * [js垃圾回收机制](docs/javascript/cash.md)
+      * [js常见面试题](docs/javascript/questions.md)
       * [函数作用域链](docs/javascript/作用域链.md)
-    * [js常见面试题](docs/javascript/questions.md)
 
 
   * [**框架**](docs/框架/README.md)
@@ -38,17 +38,23 @@
   * [**前端工程化**](docs/工程化/README.md)
     *  [Docker介绍和使用](docs/工程化/docker.md)
     *  [lerna使用](docs/工程化/lerna使用.md)
+
+
   * [**浏览器原理**](docs/浏览器/README.md)
     * [浏览器知识收集](docs/浏览器/浏览器知识点整理.md)  
     * [页面回流重绘及优化](docs/浏览器/reflow.md)  
+    * [浏览器缓存](docs/浏览器/cache.md)  
+    * [浏览器事件循环](docs/浏览器/eventLoop.md)  
+
+
   * [**常用笔记**](docs/note/README.md)
     * [Gitlab ci/cd的使用](docs/note/Gitlab-ci-cd的使用.md) 
     * [《分布式缓存-原理，架构及Go语言实现》总结](docs/note/cache-book.md) 
     * [Node技术栈脑图](docs/note/Node技术栈脑图.md) 
     * [两个脚本使用webhook部署博客](docs/note/weebhook.md) 
 
-- [**网络**](docs/network/README.md)
-  - [计算机网络大纲](docs/network/计算机网络大纲.md)
+  * [**网络**](docs/network/README.md)
+    * [计算机网络大纲](docs/network/计算机网络大纲.md)
 
 
   * [**工作记录**](docs/work/README.md)
