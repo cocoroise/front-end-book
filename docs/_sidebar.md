@@ -38,6 +38,7 @@
   * [**前端工程化**](docs/工程化/README.md)
     *  [Docker介绍和使用](docs/工程化/docker.md)
     *  [lerna使用](docs/工程化/lerna使用.md)
+    *  [前端模块化介绍](docs/工程化/module.md)
 
 
   * [**浏览器原理**](docs/浏览器/README.md)
