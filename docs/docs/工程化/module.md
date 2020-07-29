@@ -207,19 +207,174 @@ jQuery.fn = jQuery.prototype = {
 
 ### 🐼异步模块加载原理
 
-cmd模块的加载流程：
+#### cmd模块的异步加载
 
 1. 首先，通过 use 方法来加载入口模块，并接收一个回调函数， 当模块加载完成， 会调用回调函数，并传入对应的模块。use 方法会 check 模块有没有缓存，如果有，则从缓存中获取模块，如果没有，则创建并加载模块。
 2. 获取到模块后，模块可能还没有 load 完成，所以需要在模块上绑定一个 "complete" 事件，模块加载完成会触发这个事件，这时候才调用回调函数。
-3. 创建一个模块时，id就是模块的地址，通过创建 script 标签的方式异步加载模块的代码（factory），factory 加载完成后，会 check factory 中有没有 require 别的子模块:
+3. 创建一个模块时，id就是模块的地址，通过**创建 script 标签**的方式异步加载模块的代码（factory），factory 加载完成后，会 check factory 中有没有 require 别的子模块:
        \- 如果有，继续加载其子模块，并在子模块上绑定 "complete" 事件，来触发本身 的 "complete" 事件；
        \- 如果没有则直接触发本身的 "complete" 事件。
 4. 如果子模块中还有依赖，则会递归这个过程。
 5. 通过事件由里到外的传递，当所有依赖的模块都 complete 的时候，最外层的入口模块才会触发 "complete" 事件，use 方法中的回调函数才会被调用。
 
+#### **webpack_require.e** 异步加载
+
+异步加载的核心其实也是使用`类jsonp`的方式，通过动态创建`script`的方式实现异步加载。
+
+```js
+__webpack_require__.e = function requireEnsure(chunkId) {
+  var promises = [];
+
+  // 判断当前chunk是否已经安装，如果已经使用
+  var installedChunkData = installedChunks[chunkId];
+  // installedChunkData为0表示已经加载了
+  if (installedChunkData !== 0) {
+    //installedChunkData 不为空且不为0表示该 Chunk 正在网络加载中
+    if (installedChunkData) {
+      promises.push(installedChunkData[2]);
+    } else {
+      //installedChunkData 为空，表示该 Chunk 还没有加载过，去加载该 Chunk 对应的文件
+      var promise = new Promise(function(resolve, reject) {
+        installedChunkData = installedChunks[chunkId] = [resolve, reject];
+      });
+      promises.push((installedChunkData[2] = promise));
+
+      // 通过 DOM 操作，往 HTML head 中插入一个 script 标签去异步加载 Chunk 对应的 JavaScript 文件
+      var script = document.createElement("script");
+      var onScriptComplete;
+
+      script.charset = "utf-8";
+      script.timeout = 120;
+      if (__webpack_require__.nc) {
+        script.setAttribute("nonce", __webpack_require__.nc);
+      }
+      // 文件的路径为配置的 publicPath、chunkId 拼接而成
+      script.src = jsonpScriptSrc(chunkId);
+
+      // create error before stack unwound to get useful stacktrace later
+      var error = new Error();
+      // 当脚本加载完成，执行对应回调
+      onScriptComplete = function(event) {
+        // 避免IE的内存泄漏
+        script.onerror = script.onload = null;
+        clearTimeout(timeout);
+        // 去检查 chunkId 对应的 Chunk 是否安装成功，安装成功时才会存在于 installedChunks 中
+        var chunk = installedChunks[chunkId];
+        if (chunk !== 0) {
+          if (chunk) {
+            var errorType =
+              event && (event.type === "load" ? "missing" : event.type);
+            var realSrc = event && event.target && event.target.src;
+            error.message =
+              "Loading chunk " +
+              chunkId +
+              " failed.\n(" +
+              errorType +
+              ": " +
+              realSrc +
+              ")";
+            error.name = "ChunkLoadError";
+            error.type = errorType;
+            error.request = realSrc;
+            chunk[1](error);
+          }
+          installedChunks[chunkId] = undefined;
+        }
+      };
+      // 设置异步加载的最长超时时间
+      var timeout = setTimeout(function() {
+        onScriptComplete({ type: "timeout", target: script });
+      }, 120000);
+      // 在 script 加载和执行完成时回调
+      script.onerror = script.onload = onScriptComplete;
+      document.head.appendChild(script);
+    }
+  }
+  return Promise.all(promises);
+};
+```
+
+webpackJsonpCallback 
+
+webpackJsonpCallback的主要作用其实是 **加载并安装每个异步模块**。webpack会安装对应的 webpackJsonp文件。
+
+```javascript
+var jsonpArray = (window["webpackJsonp"] = window["webpackJsonp"] || []);
+var oldJsonpFunction = jsonpArray.push.bind(jsonpArray);
+// 重写数组 push 方法，重写之后，每当webpackJsonp.push的时候，就会执行webpackJsonpCallback代码
+jsonpArray.push = webpackJsonpCallback;
+jsonpArray = jsonpArray.slice();
+for (var i = 0; i < jsonpArray.length; i++) webpackJsonpCallback(jsonpArray[i]);
+
+function webpackJsonpCallback(data) {
+  //chunkIds 异步加载的文件中存放的需要安装的模块对应的 Chunk ID
+  //  moreModules 异步加载的文件中存放的需要安装的模块列表
+  var chunkIds = data[0];
+  var moreModules = data[1];
+
+  //循环去判断对应的chunk是否已经被安装，如果，没有被安装就吧对应的chunk标记为安装。
+  var moduleId,
+    chunkId,
+    i = 0,
+    resolves = [];
+  for (; i < chunkIds.length; i++) {
+    chunkId = chunkIds[i];
+    if (
+      Object.prototype.hasOwnProperty.call(installedChunks, chunkId) &&
+      installedChunks[chunkId]
+    ) {
+      // 此处的resolves push的是在__webpack_require__.e 异步加载中的 installedChunks[chunkId] = [resolve, reject];的resolve
+      resolves.push(installedChunks[chunkId][0]);
+    }
+    installedChunks[chunkId] = 0;
+  }
+  for (moduleId in moreModules) {
+    if (Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
+      modules[moduleId] = moreModules[moduleId];
+    }
+  }
+  if (parentJsonpFunction) parentJsonpFunction(data);
+
+  while (resolves.length) {
+    // 执行异步加载的所有 promise 的 resolve 函数
+    resolves.shift()();
+  }
+}
+```
+
 参考：[JS模块加载器加载原理是怎么样的？ - 知乎](https://www.zhihu.com/question/21157540)
 
+![](http://image.cocoroise.cn/20200729232035.png)
 
+### 🐿模块打包过程
+
+知道了模块的种类之后，我们可以联系到平时使用的webpack，看看写的代码是如何变成模块的。
+
+```javascript
+ (function(modules) { // webpackBootstrap
+   //...
+   // Load entry module and return exports
+   return __webpack_require__(__webpack_require__.s = 36);
+ })({
+  "./src/index.js": 
+  (function(module, __webpack_exports__, __webpack_require__) {/*模块内容*/}),
+  "./src/es.js": 
+  (function(module, __webpack_exports__, __webpack_require__) {/*模块内容*/}),
+  "./src/common.js": 
+  (function(module, exports) {/*模块内容*/})
+});
+//# sourceMappingURL=main.6196cc781843c8696cda.js.map
+```
+
+模块打包后精简的代码大致如上，从上面大概可以看出几点：
+
+1. 我们模块被转换成了立即执行函数表达式，函数会自己执行，然后进行模块的创建和链接等工作。
+
+2. 所有的模块被转换成对象作为参数传给webpackBootstrap。
+
+   对象的构成：`{ [文件的路径]：[被包装后的模块内容] }`
+
+3. 每个模块都被构造的函数包裹。
 
 ### 🐥参考
 
@@ -230,3 +385,8 @@ cmd模块的加载流程：
 [JavaScript 模块化入门Ⅰ：理解模块](https://zhuanlan.zhihu.com/p/22890374)
 
 [前端模块化详解(完整版)](https://juejin.im/post/5c17ad756fb9a049ff4e0a62)
+
+[Webpack模块化实现&动态模块加载原理](https://www.xingmal.com/article/article/1245642330535497728)
+
+[webpack模块异步加载原理解析](https://juejin.im/post/5e082fc9e51d4557fd7716bf)
+
