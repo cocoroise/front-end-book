@@ -61,6 +61,7 @@
   * [**工作记录**](docs/work/README.md)
     * [npm link命令的使用](docs/work/npmLink.md)
     * [VueRouter history模式下的nginx配置](docs/work/vue-router-history.md)
+    * [vue slot在jsx下遇到的问题及解决方法](docs/work/slots.md)
 
 
   * [**算法**](docs/算法/README.md)
