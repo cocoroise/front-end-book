@@ -207,7 +207,7 @@ commit (_type, _payload, _options) {
 
     // 通知所有_subscribers（订阅函数）本次操作的mutation对象以及当前的state状态
     this._subscribers
-      .slice() // shallow copy to prevent iterator invalidation if subscriber synchronously calls unsubscribe
+      .slice()
       .forEach(sub => sub(mutation, this.state))
   }
 ```
