@@ -201,7 +201,7 @@ main.hidden {
   color: #595959;
 }
 .anchor:hover {
-  text-decoration: underline;
+  text-shadow: 2px 2px 0px #d5d5d5, 5px 5px 0px rgba(0, 0, 0, 0.2);
 }
 .sidebar {
   border-right: 1px solid rgba(0, 0, 0, 0.07);
@@ -317,14 +317,14 @@ body.sticky .sidebar-toggle {
   color: #595959;
   /* font-family: Optima-Regular, Optima, PingFangTC-Light, PingFangSC-light,
     PingFangTC-light; */
-  background-image: linear-gradient(
+  /* background-image: linear-gradient(
       90deg,
       rgba(50, 0, 0, 0.05) 3%,
       rgba(0, 0, 0, 0) 3%
     ),
     linear-gradient(360deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%);
   background-size: 20px 20px;
-  background-position: center center;
+  background-position: center center; */
 }
 .markdown-section > * {
   box-sizing: border-box;
@@ -547,13 +547,25 @@ section.cover p {
   margin: 1em 0;
 }
 section.cover h1 {
-  color: inherit;
-  font-size: 2.5rem;
-  font-weight: 300;
-  margin: 0.625rem 0 2.5rem;
-  position: relative;
+  font-size: 38px;
+  font-weight: 600;
+  letter-spacing: 2px;
   text-align: center;
+  color: #f35626;
+  background-image: -webkit-linear-gradient(92deg, #f35626, #feab3a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-animation: hue 5s infinite linear;
 }
+@-webkit-keyframes hue {
+  from {
+    -webkit-filter: hue-rotate(0deg);
+  }
+  to {
+    -webkit-filter: hue-rotate(-360deg);
+  }
+}
+
 section.cover h1 a {
   display: block;
 }
@@ -848,4 +860,197 @@ pre:after {
   right: 0;
   text-align: right;
   top: 0;
+}
+.doodle {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  height: 100%;
+  opacity: 0.2;
+  left: 50%;
+  transform: translateX(-40%);
+}
+.footer-wrapper {
+  width: 100%;
+  height: 25vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 120px;
+}
+.footer {
+  color: black;
+  position: relative;
+  font-size: 30px;
+  padding: 30px;
+  width: 300px;
+  display: inline-block;
+  border-top: 3px dashed #d1d1e9;
+  border-bottom: 3px dashed #d1d1e9;
+}
+.footer div {
+  opacity: 0;
+}
+.footer:before,
+.footer:after {
+  padding: 30px;
+  color: #f3d2c1;
+  content: "Chi si contenta gode.";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  top: 0;
+}
+
+.footer::before {
+  left: 2px;
+  text-shadow: -1px 0 #f582ae;
+  animation-name: glitch-animation-1;
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  animation-delay: 0s;
+  animation-iteration-count: infinite;
+  animation-direction: reverse-alternate;
+}
+.footer::after {
+  left: -2px;
+  text-shadow: -1px 0 #6246ea;
+  animation-name: glitch-animation-2;
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  animation-delay: 0s;
+  animation-iteration-count: infinite;
+  animation-direction: reverse-alternate;
+}
+
+@-webkit-keyframes glitch-animation-1 {
+  0% {
+    clip: rect(12px, 350px, 92px, 30px);
+  }
+  5% {
+    clip: rect(83px, 350px, 8px, 30px);
+  }
+  10% {
+    clip: rect(47px, 350px, 18px, 30px);
+  }
+  15% {
+    clip: rect(29px, 350px, 144px, 30px);
+  }
+  20% {
+    clip: rect(138px, 350px, 147px, 30px);
+  }
+  25% {
+    clip: rect(21px, 350px, 23px, 30px);
+  }
+  30% {
+    clip: rect(142px, 350px, 131px, 30px);
+  }
+  35% {
+    clip: rect(112px, 350px, 80px, 30px);
+  }
+  40% {
+    clip: rect(145px, 350px, 69px, 30px);
+  }
+  45% {
+    clip: rect(73px, 350px, 24px, 30px);
+  }
+  50% {
+    clip: rect(61px, 350px, 22px, 30px);
+  }
+  55% {
+    clip: rect(11px, 350px, 103px, 30px);
+  }
+  60% {
+    clip: rect(21px, 350px, 146px, 30px);
+  }
+  65% {
+    clip: rect(28px, 350px, 119px, 30px);
+  }
+  70% {
+    clip: rect(129px, 350px, 34px, 30px);
+  }
+  75% {
+    clip: rect(127px, 350px, 74px, 30px);
+  }
+  80% {
+    clip: rect(137px, 350px, 71px, 30px);
+  }
+  85% {
+    clip: rect(26px, 350px, 145px, 30px);
+  }
+  90% {
+    clip: rect(107px, 350px, 120px, 30px);
+  }
+  95% {
+    clip: rect(142px, 350px, 33px, 30px);
+  }
+  100% {
+    clip: rect(143px, 350px, 42px, 30px);
+  }
+}
+@-webkit-keyframes glitch-animation-2 {
+  0% {
+    clip: rect(127px, 350px, 92px, 30px);
+  }
+  5% {
+    clip: rect(76px, 350px, 125px, 30px);
+  }
+  10% {
+    clip: rect(17px, 350px, 56px, 30px);
+  }
+  15% {
+    clip: rect(17px, 350px, 101px, 30px);
+  }
+  20% {
+    clip: rect(70px, 350px, 84px, 30px);
+  }
+  25% {
+    clip: rect(88px, 350px, 16px, 30px);
+  }
+  30% {
+    clip: rect(89px, 350px, 62px, 30px);
+  }
+  35% {
+    clip: rect(48px, 350px, 47px, 30px);
+  }
+  40% {
+    clip: rect(112px, 350px, 67px, 30px);
+  }
+  45% {
+    clip: rect(3px, 350px, 98px, 30px);
+  }
+  50% {
+    clip: rect(23px, 350px, 108px, 30px);
+  }
+  55% {
+    clip: rect(9px, 350px, 75px, 30px);
+  }
+  60% {
+    clip: rect(38px, 350px, 136px, 30px);
+  }
+  65% {
+    clip: rect(40px, 350px, 123px, 30px);
+  }
+  70% {
+    clip: rect(30px, 350px, 57px, 30px);
+  }
+  75% {
+    clip: rect(146px, 350px, 41px, 30px);
+  }
+  80% {
+    clip: rect(53px, 350px, 9px, 30px);
+  }
+  85% {
+    clip: rect(2px, 350px, 75px, 30px);
+  }
+  90% {
+    clip: rect(3px, 350px, 86px, 30px);
+  }
+  95% {
+    clip: rect(96px, 350px, 16px, 30px);
+  }
+  100% {
+    clip: rect(2px, 350px, 66px, 30px);
+  }
 }
