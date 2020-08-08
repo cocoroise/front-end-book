@@ -226,3 +226,6 @@ setTimeout(()=>{
 [一文看懂浏览器事件循环](https://juejin.im/post/5df071a9518825123e7aef17)
 
 [setTimeout和setImmediate到底谁先执行，本文让你彻底理解Event Loop](https://juejin.im/post/5e782486518825490455fb17)
+
+[面试题：说说事件循环机制(满分答案来了)](https://juejin.im/post/6844904079353708557)
+

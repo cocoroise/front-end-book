@@ -270,6 +270,8 @@ console.log(content);
 
 #### tapable
 
+[webpack系列之二Tapable #37](https://github.com/DDFE/DDFE-blog/issues/37)
+
 分为同步和异步两种，主要是用来触发事件，通知别人的。
 
 - 同步
