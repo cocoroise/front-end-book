@@ -30,7 +30,7 @@
    - 用web-worker单独计算文件的hash值
    
 - 进度条处理
-   
+  
    - 对已经传过的文件跳过秒传，对失败的文件做重传处理
    
    - 上传由于和其他接口同一域名，所以要做并发数处理
@@ -119,4 +119,101 @@
     1. 把登陆的网址和一个全局唯一id拼成一个网址，比如https://login.weixin.qq.com/l/obsbQ-Dzag==，生成二维码
     2. 用户打开手机扫描这个网址，手机把这个全局id和用户的信息一起提交给服务器
     3. 服务器把这个id和用户的账号绑定到一起，通知网页登陆成功，通知手机登陆成功
+
+11. **如何使用动态的 JS 代码生成动态的 Web Worker 实例**
+
+    [动态创建 Web Worker 实践指南](https://zhuanlan.zhihu.com/p/59981684)
+
+    Blob + URL.createObjectURL
+
+    ```javascript
+    window.URL = window.URL || window.webkitURL;
+    
+    const response = `onmessage = ({ data: { data } }) => {
+      console.log('Message received from main script');
+      const {method} = data;
+      if (data.data && method === 'format') {
+        postMessage({
+          data: {
+            'res': 'I am a customized result string.',
+          }
+        });
+      }
+      console.log('Posting message back to main script');
+    }`;
+    const blob = new Blob([response], {type: 'application/javascript'});
+    
+    const worker = new Worker(
+      URL.createObjectURL(blob)
+    );
+    
+    ```
+
+12. **Websocket 和 TCP Socket的区别是什么？**Websocket 的握手过程，为什么要基于 HTTP 请求来握手？
+
+    Websocket协议是基于TCP协议之上的一种实现，就像HTTP也是基于TCP的一种实现一样。
+
+    每个WebSocket连接都始于一个HTTP请求。 具体来说，WebSocket协议在第一次握手连接时，需要通过HTTP协议在传送WebSocket支持的版本号，协议的字版本号，原始地址，主机地址等等一些列字段给服务器端。
+
+    - WebSocket设计上就是天生为HTTP增强通信（全双工通信等），所以在HTTP协议连接的基础上是很自然的一件事，并因此而能获得HTTP的诸多便利。
+
+    - 基于HTTP连接将获得最大的一个兼容支持，比如即使服务器不支持WebSocket也能建立HTTP通信，只不过返回的是onError而已，这显然比服务器无响应要好的多。
+
+13. **如何判断模块的循环引用**
+
+    DFS 拓扑排序:
+
+    将一个有**向图无环图（DAG）**的所有顶点排成一个线性序列，若该线性序列满足：**每一个顶点都不会通过边，指向其在此序列中的前驱顶点**，则该线性序列称为该图的一个拓扑排序。
+
+    解决：
+
+    - CommonJS模块的重要特性是加载时执行，即脚本代码在`require`的时候，就会全部执行。**CommonJS的做法是，一旦出现某个模块被"循环加载"，就只输出已经执行的部分，还未执行的部分不会输出。**
+    - ES6模块的运行机制与CommonJS不一样，它遇到模块加载命令`import`时，不会去执行模块，而是只生成一个引用。等到真的需要用到时，再到模块里面去取值。因此，ES6模块是动态引用，不存在缓存值的问题，而且模块里面的变量，绑定其所在的模块。
+
+14. **如何提高Node.js 程序的稳健性**
+
+    1. 保持良好的代码结构
+    2. 使用try catch来捕获抛出异常
+    3. 使用process.on来处理未被捕捉的错误
+    4. 使用domain模块来处理程序的异常 - domain是 [EventEmitter](http://nodeapi.ucdok.com/api/events.html#events_class_events_eventemitter)类的一个子类。监听它的`error`事件来处理它捕捉到的错误。
+    5. 使用log4js来记录程序运行日志
+    6. 使用forever模块来管理nodejs - 它能帮助你重启服务器
+
+15. **假设现在有一个微信公众号文章的页面，可以展示文章、图片、视频和读者留言，从安全和交互性能的角度去讲一下如何优化**
+
+    安全：用户输入的时候编辑页面防止 XSS 攻击、敏感字符过滤、外链资源白名单过滤、图片资源脱敏处理转换为本地资源；优化：关键请求路径优化、事件监听节流、非首屏资源懒加载、代码压缩、服务端渲染、利用好缓存策略、开启 HTTP2
+
+16. **使用import时，Webpack对node_modules里的依赖会做什么 - 模块解析**
+
+    [模块解析(module resolution) - webpack](https://www.webpackjs.com/concepts/module-resolution/)
+
+    1. 模块将在 [`resolve.modules`](https://www.webpackjs.com/configuration/resolve/#resolve-modules) 中指定的所有目录内搜索。
+    2. 可以替换初始模块路径，此替换路径通过使用 [`resolve.alias`](https://www.webpackjs.com/configuration/resolve/#resolve-alias) 配置选项来创建一个别名。
+    3. 如果路径指向一个文件
+       1. 如果路径具有文件扩展名，则被直接将文件打包。
+       2. 否则，使用[reslove.extensions]选项作为文件拓展名来解析。
+    4. 如果路径指向一个文件夹
+       1. 如果文件夹包括一个package.json文件，那么从package.json的main字段里获取入口信息
+       2. 如果不包含这个文件，那么按照按照顺序查找 [`resolve.mainFiles`](https://www.webpackjs.com/configuration/resolve/#resolve-mainfiles) 配置选项中指定的文件名，看是否能在 import/require 目录下匹配到一个存在的文件名。
+
+17. **Pm2怎么做进程管理，如何使用pm2稳定运行项目**
+
+    进程管理：
+
+    - 负载均衡
+    - fork不支持定时重启，cluster支持定时重启
+    - pm2 monit 可以监控项目运行状态
+
+    稳定运行：
+
+    - 定时重启
+    - 最大内存限制
+    - 合理min_uptime，min_uptime是应用正常启动的最小持续运行时长，超出此时间则被判定为异常启动；
+    - 设定异常重启延时和异常重启次数，可以解决某些异常下重启次数过多的问题
+
+18. **定时器为什么是不精确的**
+
+    - **setTimeout**函数做的事情是，设置一个定时器，当定时器到点了就执行某个函数。但是如果当前的事件队列里的事件很多，没有执行完的话，就可能会延迟执行。
+
+    - **setInterval**的回调函数并不是到时后立即执行，而是等**系统计算资源空闲下来后才会执行**。而下一次触发时间则是在setInterval回调函数执行完毕之后才开始计时，所以如果setInterval内执行的计算过于耗时，或者有其他耗时任务在执行，setInterval的计时会越来越不准。
 

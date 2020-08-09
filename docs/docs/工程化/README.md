@@ -6,9 +6,10 @@
 - [x] 前端性能优化
 - [x] webpack的使用和原理
 - [x] 设计模式总结
-- [ ] websocket
+- [x] websocket
 - [ ] ssr
 - [ ] nginx
 - [ ] tree shaking原理
 - [ ] webpack热更新原理
+- [ ] Webrtc
 
