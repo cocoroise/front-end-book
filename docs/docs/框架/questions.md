@@ -89,13 +89,61 @@
 
 4. **为什么react需要fiber而vue不需要？**
 
-   
+   [这可能是最通俗的 React Fiber(时间分片) 打开方式](https://juejin.im/post/6844903975112671239)
+
+   - vue比较轻量，fiber太重，而且vue3的静态模版分析优化也能给vue带来很大的性能优化空间
+   - 而react里，更新过程是同步的，可能会导致性能问题。组件树很大的时候，更新就会一直占据着线程的空间。
+   - vue的响应式原理走的是异步更新队列，简单说就是所有setter的更新都会被推入watcher队列，等nextTick的时候再执行Render Function。可能vue目前的场景还比较偏移动端，单词大量更新的场景所带来的性能问题还不是它的核心渲染问题场景，引入fiber为时过早。
 
 5. **React 16 中 Diff 算法的变化**
 
-   
+   [react16的diff算法相比于react15有什么改动？ - 知乎](https://www.zhihu.com/question/266800762)
 
-6. **React 冷启动很慢，为什么，哪些地方可以优化**
+   - **Schedule DOM** - 改为以链表形式实现的虚拟DOM，和VDOM的实现和遍历方式完全不同，类似于在用户态单线程的条件下实现多进程的系统级别调度
+   - SDOM的每个一个节点都是一个**Fiber**，是链表上的一个节点
+   - 新的fiber架构中，我们有两颗fiber树，一颗旧的，一颗新的。更新完毕之后，新的**Alternate树**会变成我们的老树，以此进行新旧交替。
+   - 原来的VDOM是一颗由上至下的树，通过深度优先遍历，层层递归往下更新。但是这样不可中断。16里面这个树是一个由链表连接而成的树，每个fiber节点都记录着很多信息，以便**走到某个节点的时候中断，下次再回来继续更新。**
 
-   
+6. **vue.nextTick的原理**
+
+   [第 139 题：谈一谈 nextTick 的原理](http://muyiy.cn/question/frame/139.html)
+
+   Vue.js中的 nextTick 函数，会传入一个 cb ，这个 cb 会被存储到一个**队列**中，在下一个 tick 时触发队列中的所有 cb 事件。
+
+   因为目前浏览器平台并没有实现 nextTick 方法，所以 Vue.js 源码中分别用 **Promise、setTimeout、setImmediate** 等方式在 microtask（或是task）中创建一个事件，目的是在当前调用栈执行完毕以后（不一定立即）才会去执行这个事件。
+
+   ```javascript
+   export function nextTick (cb?: Function, ctx?: Object) {
+     let _resolve
+     callbacks.push(() => {
+       if (cb) {
+         try {
+           cb.call(ctx)
+         } catch (e) {
+           handleError(e, ctx, 'nextTick')
+         }
+       } else if (_resolve) {
+         _resolve(ctx)
+       }
+     })
+     if (!pending) {
+       pending = true
+       timerFunc()
+     }
+     // $flow-disable-line
+     if (!cb && typeof Promise !== 'undefined') {
+       return new Promise(resolve => {
+         _resolve = resolve
+       })
+     }
+   }
+   ```
+
+7. **v-if、v-show、v-html 的原理是什么，它是如何封装的？**
+
+   - **v-if**会调用addIfCondition方法，生成vnode的时候会**忽略对应节点**，render的时候就不会渲染
+
+   -  **v-show**会生成vnode，render的时候也会渲染成真实节点，只是在render过程中会在节点的属性中修改show属性值，也就是常说的**display**
+
+   -  **v-html**会先移除节点下的所有节点，调用html方法，通过addProp添加innerHTML属性，归根结底还是**设置innerHTML为v-html的值**
 

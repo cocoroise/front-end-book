@@ -7,9 +7,8 @@
 - [x] webpack的使用和原理
 - [x] 设计模式总结
 - [x] websocket
-- [ ] ssr
-- [ ] nginx
+- [x] Webrtc
+- [ ] nginx基本使用
 - [ ] tree shaking原理
 - [ ] webpack热更新原理
-- [ ] Webrtc
 
