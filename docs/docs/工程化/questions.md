@@ -217,3 +217,12 @@
 
     - **setInterval**的回调函数并不是到时后立即执行，而是等**系统计算资源空闲下来后才会执行**。而下一次触发时间则是在setInterval回调函数执行完毕之后才开始计时，所以如果setInterval内执行的计算过于耗时，或者有其他耗时任务在执行，setInterval的计时会越来越不准。
 
+19. **Babel的原理是什么?** 
+
+    babel 的转译过程也分为三个阶段，这三步具体是： 
+
+    1. 解析 Parse: 将代码解析⽣成抽象语法树( 即AST )，即词法分析与语法分析的过程 
+
+    2. 转换 Transform: 对于 AST 进⾏变换⼀系列的操作，babel 接受得到 AST 并通过 babel-traverse 对其进⾏遍历，在 此过程中进⾏添加、更新及移除等操作 
+
+    3. ⽣成 Generate: 将变换后的 AST 再转换为 JS 代码, 使⽤到的模块是 babel-generator 

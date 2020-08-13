@@ -12,6 +12,7 @@
 - throttle&debounce
 - promise
 - async & await
+- Instanceof
 - 。。。
 
 
@@ -804,6 +805,24 @@ function spawn(genF) {
 > 参考：
 >
 > [async、await和generator函数内部原理](https://juejin.im/post/5d401ce4e51d4561d106cb63)
+
+### 9️⃣instanceof
+
+```javascript
+function instance_of(L, R) { 
+  //L 表示左表达式，R 表示右表达式 
+  var O = R.prototype; 
+  L = L.__proto__; 
+  while (true) 
+  { 
+    if (L === null) return false;
+    if (O === L) 
+    // 这⾥重点：当 O 严格等于 L 时，返回 true 
+    return true;
+    L = L.__proto__;
+  } 
+}
+```
 
 
 

@@ -61,7 +61,7 @@
 
          - HTTP1.0 提供 Expires，值为一个绝对时间表示缓存新鲜日期
    - HTTP1.1 增加了 Cache-Control: max-age=,值为以秒为单位的最大新鲜时间    
-      
+   
 3. 浏览器**解析 URL**获取协议，主机，端口，path
    
    4. 浏览器**组装一个 HTTP（GET）请求报文**
@@ -195,3 +195,9 @@
    - 移动方面
      1. 保证组件小于 25k
      2. Pack Components into a Multipart Document
+
+7. **script**标签中**defer**和**async**的区别？✨ 
+
+   - defer：浏览器指示脚本在⽂档被解析后执⾏，script被异步加载后并不会⽴刻执⾏，⽽是等待⽂档被解析完毕后执⾏。
+
+   - async：同样是异步加载脚本，区别是脚本加载完毕后⽴即执⾏，这导致async属性下的脚本是乱序的，对于script 有先后依赖关系的情况，并不适⽤。 
