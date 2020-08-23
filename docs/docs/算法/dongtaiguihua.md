@@ -24,7 +24,7 @@ for 状态1 in 状态1的所有取值：
 
 ### 举例
 
-#### 斐波那契数列
+#### 1. 斐波那契数列
 
 - 一般写法
 
@@ -61,7 +61,7 @@ int fib(int N){
   console.log(fib(10));
   ```
 
-#### 凑零钱问题
+#### 2. 凑零钱问题
 
 给你 `k` 种面值的硬币，面值分别为 `c1, c2 ... ck`，每种硬币的数量无限，再给一个总金额 `amount`，问你**最少**需要几枚硬币凑出这个金额，如果不可能凑出，算法返回 -1 。这种问题其实就是背包问题，从剩下的状态里选择最优的状态集合。
 
@@ -81,5 +81,33 @@ function coinChange(coins, amount) {
 
 let arr = [1, 2, 5];
 console.log(coinChange(arr, 11));
+```
+
+#### 3. 跳跃游戏
+
+给定一个非负整数数组，你最初位于数组的第一个位置。
+
+数组中的每个元素代表你在该位置可以跳跃的最大长度。
+
+判断你是否能够到达最后一个位置。
+
+```
+输入: [2,3,1,1,4]
+输出: true
+解释: 我们可以先跳 1 步，从位置 0 到达 位置 1, 然后再从位置 1 跳 3 步到达最后一个位置。
+```
+
+**解答**
+
+```javascript
+function canJump(nums){
+	let jump=0;
+  const len = nums.length;
+  for(let i=0;i<len-1;i++){
+    jump = Math.max(jump,i+nums[i]);
+    if(jump <= i) return false;
+  }
+  return jump>=len-1;
+}
 ```
 
