@@ -14,7 +14,7 @@ def backtrack(路径, 选择列表):
         撤销选择
 ```
 
-
+在递归之前做选择，在递归之后撤销刚才的选择，就能得到正确的每个节点的选择列表和路径。
 
 ### 题目
 
@@ -90,6 +90,68 @@ function isValid(board, r, c, n) {
     }
   }
   return true;
+}
+// @lc code=end
+```
+
+#### 2. 全排列
+
+https://leetcode-cn.com/problems/permutations/
+
+给定一个 **没有重复** 数字的序列，返回其所有可能的全排列。
+
+```
+输入: [1,2,3]
+输出:
+[
+  [1,2,3],
+  [1,3,2],
+  [2,1,3],
+  [2,3,1],
+  [3,1,2],
+  [3,2,1]
+]
+```
+
+做选择：选择1,2,3
+
+撤回 track.pop()
+
+**答案：**
+
+```javascript
+/*
+ * @lc app=leetcode.cn id=46 lang=javascript
+ *
+ * [46] 全排列
+ */
+
+// @lc code=start
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+const permute = function (nums) {
+  let res = [];// 保存结果
+  let track = []; // 保存当前的排列
+  help(nums, res, track);
+  return res;
+};
+function help(nums, res, track) {
+  // 结束条件
+  if (track.length == nums.length) {
+    let tmp = track.slice(); // 拷贝一份数组 不然最后都是空值
+    res.push(tmp);
+  }
+  // 做选择
+  for (let i = 0; i < nums.length; i++) {
+    if (track.includes(nums[i])) {
+      continue;
+    }
+    track.push(nums[i]);
+    help(nums, res, track);
+    track.pop();
+  }
 }
 // @lc code=end
 ```

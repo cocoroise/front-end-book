@@ -82,6 +82,8 @@
       * [链表](docs/算法/linkNode.md)
       * [动态规划](docs/算法/dongtaiguihua.md)
       * [回溯](docs/算法/huisu.md)
+      * [搜索](docs/算法/search.md)
+      * [BFS](docs/算法/bfs.md)
       * [LRU](docs/算法/LRU.md)
       * [单调栈和单调队列](docs/算法/dandiao.md)
       * [区间问题](docs/算法/qujian.md)
