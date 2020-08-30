@@ -1,6 +1,6 @@
 # 搜索
 
-### 二分查找
+### 1. 二分查找
 
 区间对半找。
 
@@ -29,7 +29,7 @@ function binarySearch(nums,target){
 }
 ```
 
-### 最长回文子串
+### 2. 最长回文子串
 
 https://leetcode-cn.com/problems/longest-palindromic-substring/
 
@@ -84,5 +84,34 @@ function palindrome(s, left, right) {
 }
 
 // @lc code=end
+```
+
+### 3. TwoSum
+
+给你一个数组和一个整数`target`，可以保证数组中**存在**两个数的和为`target`，请你返回这两个数的索引。
+
+比如输入`nums = [3,1,3,6],target = 6`，算法应该返回数组`[0,2]`，因为 3 + 3 = 6。
+
+**思路：**先排序，然后使用二分查找，两边向中间缩小范围。
+
+**答案：**
+
+```javascript
+function twoSum(nums,target){
+  if(nums.length === 0)return 0;
+  nums.sort((a,b) => {return a - b});
+  let left = 0,right = nums.length - 1;
+  while(left < right){
+    let sum = nums[left] + nums[right];
+    if(sum == target){
+      return [left, right]
+    }else if(sum > target){
+      right --;
+    }else if(sum < target){
+      left ++;
+    }
+  }
+  return [-1, -1];
+}
 ```
 

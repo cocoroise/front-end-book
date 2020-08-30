@@ -147,3 +147,79 @@
 
    -  **v-html**会先移除节点下的所有节点，调用html方法，通过addProp添加innerHTML属性，归根结底还是**设置innerHTML为v-html的值**
 
+8. **实现一个简单的mvvn**
+
+   ```javascript
+   // js部分
+   class Watcher{
+   	constructor(cb){
+   		this.cb = cb;
+   	}
+   	update(){
+   		this.cb()
+   	}
+   }
+   class Dep{
+   	constructor(){
+   		this.subs = [];
+   	}
+   	publish(){
+   		this.subs.forEach((item)=>{
+   			item.update && item.update();
+   		})
+   	}
+   }
+   class MVVM{
+   	constructor(data){
+   		let that = this;
+   		this.dep = new Dep();
+   		this.data = new Proxy(data,{
+   			get(obj, key, prox){
+   				that.dep.target && that.dep.subs.push(that.dep.target);
+   				return obj[key]
+   			},
+   			set(obj, key, value, prox){
+   				obj[key] = value;
+   				that.dep.publish();
+   				return true;
+   			}
+   		})
+   		this.compile();
+   	}
+   	compile(){
+   		let divWatcher = new Watcher(()=>{
+   			this.compileUtils().div();
+   		})
+   		this.dep.target = divWatcher;
+   		this.compileUtils().div();
+   		this.dep.target = null;
+   		
+   		let inputWatcher = new Watcher(()=>{
+   			this.compileUtils().input();
+   		})
+   		this.dep.target = inputWatcher;
+   		this.compileUtils().input();
+   		this.compileUtils().addListener();
+   		this.dep.target = null;
+   	}
+   	compileUtils(){
+   		let that = this;
+   		return {
+   			div(){
+   				document.getElementById('foo').innerHTML = that.data.foo;
+   			},
+   			input(){
+   				document.getElementById('bar').value = that.data.bar;
+   			},
+   			addListener(){
+   				document.getElementById('bar').addEventListener('input', function(){
+   					that.data.bar = this.value;
+   				})
+   			}
+   		}
+   	}
+   }
+   let mvvm = new MVVM({foo: 'foo233', bar: 'bar233'})
+   ```
+
+   

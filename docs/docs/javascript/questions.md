@@ -92,6 +92,7 @@
 7. **Object.definePrototype和Proxy有何区别？**
    - Object.definePrototype可以自己定义对象的get和set方法，不兼容IE6
    - Proxy用于定义基本操作的自定义行为，比上一个多了很多对对象的处理方法，还多了捕捉object原型上方法的方法。比如[`Object.getOwnPropertyDescriptor`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor) 方法的捕捉器，可以在用户调用某个object api的时候知道用户调用了。
+   
 8.  **script 引入方式**
    - html 静态`<script>`引入
    - js 动态插入`<script>`
@@ -103,9 +104,26 @@
    2. 根据ast树生成字节码
    3. 根据解析器逐行执行字节码，把字节码转换成机器能够识别的机器码。如果某段字节码重复出现，那么解析器会把它当成热点代码保存起来。
 
-10. **数组拍平**
+12. **数组拍平去重并排序**
+
+    已知如下数组：
+
+    var arr = [ [1, 2, 2], [3, 4, 5, 5], [6, 7, 8, 9, [11, 12, [12, 13, [14] ] ] ], 10];
+
+    编写一个程序将数组扁平化去并除其中重复部分数据，最终得到一个升序且不重复的数组
+
+    > 去重 set
+    >
+    > Flat 数组自带方法
 
     ```javascript
+    Array.from(new Set(arr.flat(Infinity))).sort((a,b)=>{return a-b})
+    ```
+
+    单纯拍平
+
+    ```javascript
+    // flat
     function flat(arr){
       return arr.reduce((pre,cur)=>{
         return pre.concat(Array.isArray(cur)?flat(cur):cur)
@@ -233,5 +251,183 @@
     16. **Cookie 和 SameSite 属性**
 
         https://github.com/mqyqingfeng/Blog/issues/157
+
+    17. **实现一个sleep方法**
+
+        ```javascript
+        //Promise
+        const sleep = time => {
+          return new Promise(resolve => setTimeout(resolve,time))
+        }
+        sleep(1000).then(()=>{
+          console.log(1)
+        })
+        
+        //Generator
+        function* sleepGenerator(time) {
+          yield new Promise(function(resolve,reject){
+            setTimeout(resolve,time);
+          })
+        }
+        sleepGenerator(1000).next().value.then(()=>{console.log(1)})
+        
+        //async
+        function sleep(time) {
+          return new Promise(resolve => setTimeout(resolve,time))
+        }
+        async function output() {
+          let out = await sleep(1000);
+          console.log(1);
+          return out;
+        }
+        output();
+        
+        //ES5
+        function sleep(callback,time) {
+          if(typeof callback === 'function')
+            setTimeout(callback,time)
+        }
+        
+        function output(){
+          console.log(1);
+        }
+        sleep(output,1000);
+        ```
+
+    18. **function原型问题**
+
+        ```javascript
+        function Foo() {
+          Foo.a = function() {
+          	console.log(1)
+          }
+          this.a = function() {
+          	console.log(2)
+          }
+        }
+        Foo.prototype.a = function() {
+        	console.log(3)
+        }
+        Foo.a = function() {
+        	console.log(4)
+        }
+        Foo.a(); // 4，Foo里的属性方法a还没有被调用过
+        let obj = new Foo();
+        obj.a(); // 2，调用了属性方法，内部属性优先级高于原型方法
+        Foo.a();// 1，Foo初始化之后覆盖了同名的静态方法
+        ```
+
+        **输出：**
+
+        4
+
+        2
+
+        1
+
+        **解释：**
+
+        1. `Foo.a()` 这个是调用 Foo 函数的静态方法 a，虽然 Foo 中有优先级更高的属性方法 a，但 Foo 此时没有被调用，所以此时输出 Foo 的静态方法 a 的结果：**4**
+        2. `let obj = new Foo();` 使用了 new 方法调用了函数，返回了函数实例对象，此时 Foo 函数内部的属性方法初始化，原型方法建立。
+        3. `obj.a();` 调用 obj 实例上的方法 a，该实例上目前有两个 a 方法：一个是内部属性方法，另一个是原型方法。当这两者重名时，前者的优先级更高，会覆盖后者，所以输出：**2**
+        4. `Foo.a();` 根据第2步可知 Foo 函数内部的属性方法已初始化，覆盖了同名的静态方法，所以输出：**1**
+
+    19. **string转换问题**
+
+        ```javascript
+        String('11') == new String('11'); // true
+        String('11') === new String('11'); // false
+        ```
+
+        **解释：**
+
+        String() 返回 字符串，new String()返回对象
+
+        == 的时候，实际上调用的是new String('11').toString() 也就是‘11’
+
+    20. **实现 (5).add(3).minus(2) **
+
+        ```javascript
+        Number.prototype.add = function (number) {
+            if (typeof number !== 'number') {
+                throw new Error('请输入数字～');
+            }
+            return this + number;
+        };
+        Number.prototype.minus = function (number) {
+            if (typeof number !== 'number') {
+                throw new Error('请输入数字～');
+            }
+            return this - number;
+        };
+        console.log((5).add(3).minus(2));
+        ```
+
+    21. **要求设计 LazyMan 类，实现以下功能**
+
+        ```js
+        LazyMan('Tony').eat('lunch').eat('dinner').sleepFirst(5).sleep(10).eat('junk food');
+        // Hi I am Tony
+        // 等待了5秒...
+        // I am eating lunch
+        // I am eating dinner
+        // 等待了10秒...
+        // I am eating junk food
+        ```
+
+        **解答：**
+
+        ```javascript
+        class LazyManClass {
+          constructor(name) {
+            this.name = name
+            this.queue = []
+            console.log(`Hi I am ${name}`)
+            setTimeout(() => {
+              this.next()
+            },0)
+          }
+        
+          sleepFirst(time) {
+            const fn = () => {
+              setTimeout(() => {
+                console.log(`等待了${time}秒...`)
+                this.next()
+              }, time)
+            }
+            this.queue.unshift(fn)
+            return this
+          }
+        
+          sleep(time) {
+            const fn = () => {
+              setTimeout(() => {
+                console.log(`等待了${time}秒...`)
+                this.next()
+              },time)
+            }
+            this.queue.push(fn)
+            return this
+          }
+        
+          eat(food) {
+            const fn = () => {
+              console.log(`I am eating ${food}`)
+              this.next()
+            }
+            this.queue.push(fn)
+            return this
+          }
+        
+          next() {
+            const fn = this.queue.shift()
+            fn && fn()
+          }
+        }
+        
+        function LazyMan(name) {
+          return new LazyManClass(name)
+        }
+        ```
 
         

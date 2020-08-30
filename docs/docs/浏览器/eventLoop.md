@@ -52,6 +52,8 @@ JS是单线程的，那单线程怎么实现的异步呢？
 
 当某个宏任务执行完后，会查看是否有微任务队列。如果有，先执行微任务队列中的所有任务，如果没有，会读取宏任务队列中排在最前的任务，执行宏任务的过程中，遇到微任务，依次加入微任务队列。栈空后，再次读取微任务队列里的任务，依次类推。
 
+总的结论就是，**执行宏任务，然后执行该宏任务产生的微任务，若微任务在执行过程中产生了新的微任务，则继续执行微任务，微任务执行完毕后，再回到宏任务中进行下一轮循环。**
+
 - 宏任务
 
   setTimeout、setInterval、setImmediate、I/O、UI交互事件
@@ -96,7 +98,6 @@ Node 中的 Event Loop 和浏览器中的是完全不相同的东西。Node.js �
 
 - V8 引擎再将结果返回给用户。
 
-  
 
 具体执行过程如下：
 
@@ -164,8 +165,6 @@ Start -> end -> promise3 -> timer1 -> timer2 -> promise1 -> promise2
 - 一开始执行栈的同步任务（这属于宏任务）执行完毕后（依次打印出 start end，并将 2 个 timer 依次放入 timer 队列）,会先去执行微任务（**这点跟浏览器端的一样**），所以打印出 promise3
 - 然后进入 timers 阶段，执行 timer1 的回调函数，打印 timer1，并将 promise.then 回调放入 microtask 队列，同样的步骤执行 timer2，打印 timer2；这点跟浏览器端相差比较大，**timers 阶段有几个 setTimeout/setInterval 都会依次执行**，并不像浏览器端，每执行一个宏任务后就去执行一个微任务。
 
-
-
 ### 🕉浏览器和Node环境的差别
 
 浏览器环境下，microtask 的任务队列是**每个 macrotask 执行完之后执行**。
@@ -201,8 +200,6 @@ setTimeout(()=>{
 
 可以这样记忆，浏览器是一个宏任务一个微任务，而node环境是一个阶段一个微任务，而注册的好几个宏任务都会一起在timer阶段依次执行。
 
-
-
 ### 💟总结
 
 - JS所谓的“单线程”只是指主线程只有一个，并不是整个运行环境都是单线程
@@ -216,8 +213,6 @@ setTimeout(()=>{
 - Node.js的Event Loop跟浏览器的Event Loop不一样，他是分阶段的
 - `setImmediate`和`setTimeout(fn, 0)`哪个回调先执行，需要看他们本身在哪个阶段注册的，如果在定时器回调或者I/O回调里面，`setImmediate`肯定先执行。如果在最外层或者`setImmediate`回调里面，哪个先执行取决于当时机器状况。
 - `process.nextTick`不在Event Loop的任何阶段，他是一个特殊API，他会立即执行，然后才会继续执行Event Loop，vue的$nextTick里就用到了这个api
-
-
 
 ### ♐️参考
 

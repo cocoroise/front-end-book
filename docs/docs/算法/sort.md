@@ -61,3 +61,84 @@ function insertSort(arr){
 }
 ```
 
+### 希尔排序
+
+有步长的插入排序
+
+```javascript
+function shellSort(arr) {
+    let len = arr.length;
+    let temp, gap = 1;
+    //确定步长
+    while (gap < len / 3) {
+        gap = gap * 3 + 1;
+    }
+    while (gap >= 1) {
+        for (let i = gap; i < len; i++) {
+            temp = arr[i];
+            for (let j = i - gap; j >= 0 && arr[j] > temp; j -= gap) {
+                arr[j + gap] = arr[j];
+            }
+            arr[j + gap] = temp;
+        }
+        //重置步长
+        gap = (gap - 1) / 3;
+    }
+    return arr;
+}
+```
+
+### 归并排序
+
+```javascript
+function mergeSort(arr) {
+    let len = arr.length;
+    if (len < 2) {
+        return arr;
+    }
+    let middle = Math.floor(len / 2);
+    let left = arr.slice(0, middle);
+    let right = arr.slice(middle);
+    return merge(mergeSort(left), mergeSort(right));
+}
+function merge(left, right) {
+    let result = [];
+    while (left.length && right.length) {
+        if (left[0] < right[0]) {
+            result.push(left.shift());
+        } else {
+            result.push(right.shift());
+        }
+    }
+    while (left.length) {
+        result.push(left.shift());
+    }
+    while (right.length) {
+        result.push(right.shift());
+    }
+    return result;
+}
+```
+
+### 一些题目
+
+1. 移动零到数组末尾
+
+   ```javascript
+   // 快慢指针，慢指针遇到非0前进一步，遇到0和快指针交换位置
+   function moveZero(arr) {
+     let i = 0
+     let j = 0
+     while (j < arr.length) {
+       if (arr[i] !== 0) {
+         i++
+       } else if (arr[j] !== 0) {
+         ;[arr[i], arr[j]] = [arr[j], arr[i]]
+         i++
+       }
+       j++
+     }
+   }
+   ```
+
+   
