@@ -430,4 +430,50 @@
         }
         ```
 
+    22. **使用ES5里的var 实现 ES6 语法中的 const 声明**
+    
+        ```javascript
+        // 使用es5 的语法 去实现 ES6 中的 const 的声明
+        // 首先我们要知道 const 有什么特性：
+        // - 不能重新定义
+        // - 不能重新赋值
+        // - 语义化标识，表示声明后不可更改的不变量
+        // - 声明时 完成 初始化
+        // 本质上：const 所保证的并不是变量的值不可改变 而是 变量所指向的内存地址不可改变 简单的数据类型保存在内存地址中 等同于常量
+        	var _const=function(param,value){
+        		// 使用一个对象 这里设置成 window
+        		var _global = window;
+        		// 判断要声明的 param 是否合法   不可以是关键字
+        		var key_arr = ['class','var','let','const','return']// 还可以在增加限定关键字
+        		if(!param || key_arr.i45ytygndexOf(param)>-1){
+        			throw new Error(`${param} 属于关键字 声明不合法`)
+        		}
+        		// 判断是否已经存在了
+        		if(_global.hasOwnProperty(param)){
+        			throw new Error(`${param} 已经被声明过了`)
+        		}
+        		// 给 _global 添加属性 param 
+        		_global[param] = value;
+        		// 使用定义属性方法  defineProperty
+        		Object.defineProperty(_global,param,{
+        			get:function(){
+        				return value;
+        			},
+        			set:function(){
+        				// 检查赋值 已经存在了 不可再进行赋值
+        				if(_global.hasOwnProperty(param)){
+        					throw new Error(`${param} 不可再进行赋值`)
+        				}
+        				return value;
+        			}
+        		})
+        	}
+        	_const('TEST', "test_value"); 
+        	console.log("TEST",TEST);
+        	//_const('TEST', "test_value"); // Uncaught Error: TEST 已经被声明过了
+        	TEST = "9999"//Uncaught Error: TEST 不可再进行赋值
+        
+        	console.log("TEST2",TEST);
+        ```
+    
         
