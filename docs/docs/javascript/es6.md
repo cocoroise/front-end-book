@@ -44,9 +44,7 @@ let obj = new Proxy({}, {
 });
 ```
 
-
-
-### reflect
+### Reflect
 
 [reflect](https://es6.ruanyifeng.com/#docs/reflect)
 

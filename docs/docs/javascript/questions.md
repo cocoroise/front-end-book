@@ -28,11 +28,10 @@
 3. **数据是如何存储的？**
 
    - 原始类型里，除了object，都是存放在栈里的。
-
-   - 所有的对象类型，都是存放在堆里面的。
-
-   栈内存小，适合存储相对基础的数据类型，如果用于存放复杂的对象类型，那么程序切换上下文的开销会变得很大。在内存回收机制里，上下文切换之后，栈顶的空间会被自动回收。但是对于堆而言，内存的回收就相对复杂了。在v8进行内存回收的时候，会阻塞业务代码的执行，存放在堆内存里的数据很大，但是也会带来相应的时间开销。
-
+- 所有的对象类型，都是存放在堆里面的。
+   
+栈内存小，适合存储相对基础的数据类型，如果用于存放复杂的对象类型，那么程序切换上下文的开销会变得很大。在内存回收机制里，上下文切换之后，栈顶的空间会被自动回收。但是对于堆而言，内存的回收就相对复杂了。在v8进行内存回收的时候，会阻塞业务代码的执行，存放在堆内存里的数据很大，但是也会带来相应的时间开销。
+   
 4. **谈一下require和import的区别**
 
    - require是commonjs的规范，在node中实现的api，import是es的语法，由编译器处理。所以import可以做模块依赖的静态分析，配合webpack、rollup等可以做treeshaking。
@@ -93,12 +92,6 @@
    - Object.definePrototype可以自己定义对象的get和set方法，不兼容IE6
    - Proxy用于定义基本操作的自定义行为，比上一个多了很多对对象的处理方法，还多了捕捉object原型上方法的方法。比如[`Object.getOwnPropertyDescriptor`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor) 方法的捕捉器，可以在用户调用某个object api的时候知道用户调用了。
    
-8.  **script 引入方式**
-   - html 静态`<script>`引入
-   - js 动态插入`<script>`
-   - `<script defer>`: 延迟加载，元素解**析完成后执行**
-   - `<script async>`: **异步**加载，但执行时会**阻塞**元素渲染
-
 9. **V8执行js代码的流程？**
    1. 根据源代码生成ast树
    2. 根据ast树生成字节码
@@ -131,19 +124,10 @@
     }
     ```
 
-13. **reduce方法实现**
+12. **reduce方法实现**
 
     ```javascript
     Array.prototype.reduce  = function(callbackfn, initialValue) {
-      // 异常处理，和 map 一样
-      // 处理数组类型异常
-      if (this === null || this === undefined) {
-        throw new TypeError("Cannot read property 'reduce' of null or undefined");
-      }
-      // 处理回调类型异常
-      if (Object.prototype.toString.call(callbackfn) != "[object Function]") {
-        throw new TypeError(callbackfn + ' is not a function')
-      }
       let O = Object(this);
       let len = O.length >>> 0;
       let k = 0;
@@ -431,7 +415,7 @@
         ```
 
     22. **使用ES5里的var 实现 ES6 语法中的 const 声明**
-    
+
         ```javascript
         // 使用es5 的语法 去实现 ES6 中的 const 的声明
         // 首先我们要知道 const 有什么特性：
@@ -475,5 +459,41 @@
         
         	console.log("TEST2",TEST);
         ```
-    
-        
+
+    23. **for in和for of的区别**
+
+        - for in
+
+          会遍历出对象的所有可枚举的属性, 比如prototype上的，解决方法：使用hasOwnProperty判断一下
+
+          ```javascript
+          var obj = {a:1, b: 2}
+          obj.__proto__.c = 3;
+          Object.prototype.d = 4
+          for(let val in obj) {
+              console.log(val) // a,b,c,d
+          }
+          // 优化
+          for(let val in obj) {
+              if(obj.hasOwnProperty(val)) { // 判断属性是存在于当前对象实例本身，而非原型上
+                  console.log(val) // a,b
+              }   
+          }
+          ```
+
+        - for of
+
+          只有提供了 Iterator 接口的数据类型才可以使用 for-of，Array 等类型是默认提供的。
+
+          ```javascript
+          const obj = { a:1, b: 2 }
+          
+          for(let {key, value} of obj){
+              console.log( key, value );
+              // a 1
+              // b 2
+          }
+          ```
+
+          
+

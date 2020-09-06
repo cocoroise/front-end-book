@@ -8,7 +8,7 @@ function traverse(root){
 	traverse(root.left);
 	// 中序遍历
 	traverse(root.right);
-	// 后序遍历
+	// 后序遍历 
 }
 ```
 
@@ -158,6 +158,8 @@ const isSameTree = function (p, q) {
 
 ⼆叉搜索树（Binary Search Tree，简称 BST）是⼀种很常⽤的的⼆叉树。它 的定义是：⼀个⼆叉树中，任意节点的值要⼤于等于左⼦树所有节点的值，且要⼩于等于右边⼦树的所有节点的值。
 
+二叉搜索树的特点：中序遍历是升序数组。
+
 <img src="http://image.cocoroise.cn/20200814165629.png" style="zoom:33%;" />
 
 问题：实现BST的查找和插入操作，并需要判断一颗二叉树是否是正确的二叉搜索树。
@@ -269,4 +271,171 @@ const hasPathSum = function (root, sum) {
 
 // @lc code=end
 ```
+
+#### 6. 遍历二叉树
+
+给你一个二叉树，请你返回其按 **层序遍历** 得到的节点值。 （即逐层地，从左到右访问所有节点）。
+
+```
+示例：二叉树：[3,9,20,null,null,15,7],
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+
+答案：
+
+```javascript
+const levelOrder = function(root) {
+    const ret = [];
+    if (!root) return ret;
+
+    const q = [];
+    q.push(root);
+    while (q.length !== 0) {
+        const currentLevelSize = q.length;
+        ret.push([]);
+        for (let i = 1; i <= currentLevelSize; ++i) {
+            const node = q.shift();
+            ret[ret.length - 1].push(node.val);
+            if (node.left) q.push(node.left);
+            if (node.right) q.push(node.right);
+        }
+    }
+        
+    return ret;
+};
+```
+
+#### 7. 镜像二叉树
+
+https://leetcode-cn.com/problems/dui-cheng-de-er-cha-shu-lcof/
+
+给定一个二叉树，检查它是否是镜像对称的。
+
+例如，二叉树 `[1,2,2,3,4,4,3]` 是对称的。
+
+```
+    1
+   / \
+  2   2
+ / \ / \
+3  4 4  3
+```
+
+递归遍历判断
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {boolean}
+ */
+var isSymmetric = function(root) {
+   if(root==null)return true;
+   return help(root.left,root.right);
+};
+function help(left,right){
+    if(left==null && right==null) return true;
+    if(left==null || right==null || left.val != right.val) return false;
+    return help(left.left,right.right) && help(left.right,right.left);
+}
+```
+
+#### 8. 重构二叉树
+
+重构题目的思路在于：熟悉遍历的流程
+
+**前序遍历**的形式总是根节点总是前序遍历中的第一个节点。
+
+```
+[ 根节点, [左子树的前序遍历结果], [右子树的前序遍历结果] ]
+```
+
+
+而**中序遍历**的形式总是
+
+```
+[ [左子树的中序遍历结果], 根节点, [右子树的中序遍历结果] ]
+```
+
+**后序遍历**的形式是
+
+```
+[ [左子树的中序遍历结果], [右子树的中序遍历结果], 根节点 ]
+```
+
+只要能通过两个结果递归的找到根节点的位置，就能够还原任意一颗二叉树。
+
+从前序或者后序找到根节点的位置，然后切割中序遍历的数组。
+
+递归结束条件就是中序遍历的数组为空。
+
+- 给出前序遍历和中序遍历，构造二叉树
+
+  ```
+  前序遍历 preorder = [3,9,20,15,7]
+  中序遍历 inorder = [9,3,15,20,7]
+  结果：
+      3
+     / \
+    9  20
+      /  \
+     15   7
+  ```
+
+  答案：
+
+  ```javascript
+  const buildTree = function (preorder, inorder) {
+    if (inorder.length === 0) return null;
+    let res = new TreeNode(preorder[0]);
+    let index = inorder.indexOf(preorder[0]); // 最重要的一步，找根节点
+    res.left = buildTree(preorder.slice(1, index + 1), inorder.slice(0, index));
+    res.right = buildTree(preorder.slice(index + 1), inorder.slice(index + 1));
+    return res;
+  };
+  ```
+
+- 给出中序遍历和后序遍历，构造二叉树
+
+  ```
+  中序遍历 inorder = [9,3,15,20,7]
+  后序遍历 postorder = [9,15,7,20,3]
+  结果：
+      3
+     / \
+    9  20
+      /  \
+     15   7
+  ```
+
+  答案：
+
+  ```javascript
+  var buildTree = function (inorder, postorder) {
+    if (inorder.length === 0) return null;
+    let value = postorder[postorder.length - 1];
+    let root = new TreeNode(value);
+    let mid = inorder.indexOf(value);
+  
+    root.left = buildTree(inorder.slice(0, mid), postorder.slice(0, mid));
+    root.right = buildTree(
+      inorder.slice(mid + 1),
+      postorder.slice(mid, postorder.length - 1)
+    );
+    return root;
+  };
+  ```
+
+  
 

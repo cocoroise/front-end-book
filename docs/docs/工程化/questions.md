@@ -18,17 +18,18 @@
    推荐 - [你的Tree-shaking并没什么卵用](https://segmentfault.com/a/1190000012794598)
    
 2. **commonJs和es6 module的区别？**
-   
+
    - commonjs是加载时运行，而es module是编译时运行
    - commonjs输出的是值的浅拷贝，es module是值的引用
    - webpack的webpack_require对他们的处理方式不同
-   
+   - CommonJS规范主要用于服务端编程，加载模块是同步的，这并不适合在浏览器环境，因为同步意味着阻塞加载，浏览器资源是异步加载的，因此有了AMD CMD解决方案。
+
 3. **前端大型文件上传优化？**
-   
+
    - 文件切片
-   
+
    - 用web-worker单独计算文件的hash值
-   
+
 - 进度条处理
   
    - 对已经传过的文件跳过秒传，对失败的文件做重传处理
@@ -216,3 +217,10 @@
 
     3. **⽣成** Generate: 将变换后的 AST 再转换为 JS 代码, 使⽤到的模块是 babel-generator 
 
+20. **前端如何做性能监控？**
+
+    对于性能监控来说，我们可以直接使用浏览器自带的 [Performance API](https://developer.mozilla.org/zh-CN/docs/Web/API/Performance) 来实现这个功能。
+
+    对于性能监控来说，其实我们只需要调用 `performance.getEntriesByType('navigation')` 这行代码就行了。
+
+    复杂一点也可以使用chrome的puppeteer api。

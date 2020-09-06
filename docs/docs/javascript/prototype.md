@@ -76,8 +76,6 @@ f1.__proto__ = Foo.prototype
 
 <img src="http://image.cocoroise.cn/proto2.png" style="zoom:67%;" />
 
-#### 
-
 #### 4. 联系
 
 小小的总结一下，为什么原型链要这样设计。

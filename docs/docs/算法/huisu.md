@@ -156,7 +156,37 @@ function help(nums, res, track) {
 // @lc code=end
 ```
 
-#### 3. 组合总和2
+#### 3. 组合总和1
+
+https://leetcode-cn.com/problems/combination-sum/
+
+```javascript
+var combinationSum = function(candidates, target) {
+    let n = candidates.length,
+        res = [],
+        tmpPath = [],
+        backtrack = (tmpPath, target, start) => {
+            if (target < 0) {
+                return;
+            }
+            if (target == 0) {
+                res.push(tmpPath);
+                return;
+            }
+            for (let i = start; i < n; i++) {
+                tmpPath.push(candidates[i]);
+                backtrack(tmpPath.slice(), target - candidates[i], i);
+                tmpPath.pop();
+            }
+        }
+    backtrack(tmpPath, target, 0);
+    return res;
+};
+```
+
+
+
+#### 4. 组合总和2
 
 第40题：https://leetcode-cn.com/problems/combination-sum-ii/
 

@@ -1,5 +1,15 @@
 # 排序算法
 
+### 通用数组交换
+
+```javascript
+function swap(array, left, right) {
+    let rightValue = array[right]
+    array[right] = array[left]
+    array[left] = rightValue
+}
+```
+
 ### 冒泡
 
 简单粗暴，两个全数组遍历。
@@ -42,22 +52,32 @@ function quickSort(arr) {
 }
 ```
 
+### 选择排序
+
+```javascript
+function selection(array) {
+  if (!checkArray(array)) return
+  for (let i = 0; i < array.length - 1; i++) {
+    let minIndex = i;
+    for (let j = i + 1; j < array.length; j++) {
+      minIndex = array[j] < array[minIndex] ? j : minIndex;
+    }
+    swap(array, i, minIndex);
+  }
+  return array;
+}
+```
+
 ### 插入排序
 
 ```javascript
-function insertSort(arr){
-  const len = arr.length;
-  let preIndex,current;
-  for(let i=1;i<len;i++){
-    preIndex = i - 1;
-    current = arr[i];
-    while(preIndex >= 0 && arr[preIndex] > current){
-      arr[preIndex + 1] = arr[preIndex];
-      preIndex--;
-    }
-    arr[preIndex+1] = current;
+function insertion(array) {
+  if (!checkArray(array)) return
+  for (let i = 1; i < array.length; i++) {
+    for (let j = i - 1; j >= 0 && array[j] > array[j + 1]; j--)
+      swap(array, j, j + 1);
   }
-  return arr;
+  return array;
 }
 ```
 
@@ -133,7 +153,7 @@ function merge(left, right) {
        if (arr[i] !== 0) {
          i++
        } else if (arr[j] !== 0) {
-         ;[arr[i], arr[j]] = [arr[j], arr[i]]
+         [arr[i], arr[j]] = [arr[j], arr[i]];
          i++
        }
        j++

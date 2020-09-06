@@ -519,205 +519,120 @@ new Promise((resolve,reject)=>{
 代码：
 
 ```javascript
-class MyPromise {
+// 1. 三种状态 'pending','fullfiled','rejected'
+// 2. then链式调用,返回一个新的promise实例
+// 3. _handle方法用来处理回调函数
+// 4. all需要一个count计数，把结果保存在一个数组里面
+// 5. race只需要for异步请求，只要有一个reslove就直接resolve，更简单
+
+class myPromise {
+  state = "pending";
+  callbacks = [];
+  value = undefined;
+  err = undefined;
   constructor(fn) {
-    this.status = this.STATUS_MAP.PENDING;
-    this.result = null;
-    this.reason = null;
-
-    this.onfullfilledList = []; // 成功之后的回调函数列表
-    this.onRejectedList = []; // 失败的
-
-    this.excutor(fn);
+    fn(this._resolved.bind(this), this._rejected.bind(this));
   }
-
-  STATUS_MAP = {
-    PENDING: "pending",
-    REJECTED: "rejected",
-    FULFILLED: "fulfilled",
-  };
-
-  resolve(value) {
-    if (this.status !== this.STATUS_MAP.PENDING) return;
-    this.status = this.STATUS_MAP.FULFILLED;
-    this.result = value;
-    this.onfullfilledList.forEach((fn) => fn());
+  // 每个then都会返回一个新的promise以供链式调用
+  then(onFullfilled, onRejected) {
+    return new myPromise((resolve, reject) => {
+      this._handle({
+        onFullfilled: onFullfilled || null,
+        onRejected: onRejected || null,
+        resolve,
+        reject,
+      });
+    });
   }
-  reject(reason) {
-    if (this.status !== this.STATUS_MAP.PENDING) return;
-    this.status = this.STATUS_MAP.REJECTED;
-    this.reason = reason;
-    this.onRejectedList.forEach((fn) => fn());
-  }
-  excutor(fn) {
-    const self = this;
+  _handle(callback) {
+    if (this.state == "pending") {
+      this.callbacks.push(callback);
+      return;
+    }
+    let cb =
+      this.state === "fullfiled" ? callback.onFullfilled : callback.onRejected;
+    // 运行下一个的回调函数
+    let ret = cb(this.value);
 
-    try {
-      fn(this.resolve.bind(self), this.reject.bind(self));
-    } catch (err) {
-      this.reject(err);
+    // 把运行的结果传给resolve或者reject
+    cb = this.state === "fullfiled" ? callback.resolve : callback.reject;
+    cb(ret);
+  }
+  _resolved(value) {
+    if (this.state === "pending") {
+      if ((value && typeof value == "object") || typeof value == "function") {
+        let then = value.then;
+        if (typeof then == "function") {
+          then.call(
+            value,
+            this._resolved.bind(this),
+            this._rejected.bind(this)
+          );
+          return;
+        }
+      }
+      this.value = value;
+      this.state = "fullfiled";
+      setTimeout(() => {
+        this.callbacks.forEach((v) => this._handle(v));
+      }, 0);
     }
   }
-
-  then(onFulfilled, onRejected) {
-    onFulfilled =
-      onFulfilled instanceof Function ? onFulfilled : (value) => value;
-    onRejected =
-      onRejected instanceof Function
-        ? onRejected
-        : (reason) => {
-            throw reason;
-          };
-    const self = this;
-    let promise2 = new MyPromise((resolve, reject) => {
-      if (self.status === self.STATUS_MAP.FULFILLED) {
-        setTimeout(() => {
-          try {
-            let x = onFulfilled(self.result);
-            self.resolvePromise(promise2, x, resolve, reject);
-          } catch (err) {
-            reject(err);
-          }
-        });
-      } else if (self.status === self.STATUS_MAP.REJECTED) {
-        setTimeout(() => {
-          try {
-            let x = onRejected(self.reason);
-            self.resolvePromise(promise2, x, resolve, reject);
-          } catch (err) {
-            reject(err);
-          }
-        });
-      } else if (self.status === self.STATUS_MAP.PENDING) {
-        self.onfullfilledList.push(() => {
-          setTimeout(() => {
-            try {
-              let x = onFulfilled(self.result);
-              self.resolvePromise(promise2, x, resolve, reject);
-            } catch (err) {
-              reject(err);
+  _rejected(err) {
+    if (this.state === "pending") {
+      this.err = err;
+      this.state = "rejected";
+      this.callbacks.forEach((v) => this._handle(v));
+    }
+  }
+  all(promises) {
+    return new myPromise((resolve, reject) => {
+      let count = 0;
+      const len = promises.length;
+      const rets = Array.from({ length: len });
+      promises.forEach((fn, i) => {
+        myPromise.resolve(fn).then(
+          (res) => {
+            count++;
+            rets[i] = res;
+            if (count == length) {
+              resolve(rets);
             }
-          });
-        });
-        self.onRejectedList.push(() => {
-          setTimeout(() => {
-            try {
-              let x = onRejected(self.reason);
-              self.resolvePromise(promise2, x, resolve, reject);
-            } catch (err) {
-              reject(err);
-            }
-          });
-        });
+          },
+          (err) => reject(err)
+        );
+      });
+    });
+  }
+  race(promises) {
+    return new myPromise((resolve, reject) => {
+      for (let i = 0; i < promises.length; i++) {
+        Promise.resolve(promises[i]).then(
+          (res) => {
+            return resolve(res);
+          },
+          (err) => {
+            return reject(err);
+          }
+        );
       }
     });
-    return promise2;
-  }
-  resolvePromise(promise2, x, resolve, reject) {
-    const that = this;
-    if (promise2 === x) {
-      reject("循环调用");
-    }
-    if ((x && typeof x === "object") || typeof x === "function") {
-      let used = false;
-      try {
-        let then = x.then;
-        if (typeof then === "function") {
-          then.call(
-            x,
-            (y) => {
-              if (used) return;
-              used = true;
-              // 支持链式调用
-              that.resolvePromise(promise2, y, resolve, reject);
-            },
-            (r) => {
-              if (used) return;
-              used = true;
-              reject(r);
-            }
-          );
-        } else {
-          if (used) return;
-          used = true;
-          resolve(x);
-        }
-      } catch (err) {
-        if (used) return;
-        used = true;
-        reject(err);
-      }
-    } else {
-      // 普通对象比如数字或字符直接reslove
-      resolve(x);
-    }
-  }
-  finally(cb) {
-    return this.then(
-      (value) => {
-        this.resolve(cb()).then(() => value);
-      },
-      (error) => {
-        this.resolve(cb()).then(() => {
-          throw error;
-        });
-      }
-    );
   }
 }
-```
 
-测试：
-
-```
-// test
-function async1() {
-  return new MyPromise((resolve, reject) => {
-    console.log("async1 start");
-    setTimeout(() => {
-      resolve("async1 finished");
-    }, 1000);
-  });
-}
-
-function async2() {
-  return new MyPromise((resolve, reject) => {
-    console.log("async2 start");
-    setTimeout(() => {
-      resolve("async2 finished");
-    }, 500);
-  });
-}
-
-function async3() {
-  return new MyPromise((resolve, reject) => {
-    console.log("async3 start");
-    setTimeout(() => {
-      resolve("async3 finished");
-    }, 2000);
-  });
-}
-
-async1()
-  .then((data) => {
-    console.log(data);
-    return async2();
+// 使用
+const fn = new myPromise((resolve, rejected) => {
+  setTimeout(() => {
+    console.log("aaa");
+    resolve("aaa");
+  }, 1000);
+})
+  .then((res) => {
+    console.log("res", res);
   })
-  .then((data) => {
-    console.log(data);
-    return async3();
-  })
-  .then((data) => {
-    console.log(data);
+  .then((res) => {
+    console.log("res2", res);
   });
-
-// run
-// async1 start
-// async1 finished
-// async2 start
-// async2 finished
-// async3 start
-// async3 finished
 ```
 
 > 参考：

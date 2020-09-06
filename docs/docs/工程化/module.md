@@ -93,6 +93,18 @@ jQuery.fn = jQuery.prototype = {
   module.exports = mo;
   ```
 
+  对于exports 与 module.exports，Node为每个模块提供一个exports变量，指向module.exports。这等同在每个模块头部，有一行这样的命令。
+
+  ```javascript
+  var exports = module.exports;
+  
+  exports.[function name] = [function name]
+  
+  moudle.exports= [function name]
+  ```
+
+  为了避免混乱，还是尽量使用module.exports导出函数，使用require导入函数。
+
   但是需要注意的一点是，CommonJS以**服务器优先**的方式来同步载入模块，假使我们引入三个模块的话，他们会**一个个地被载入**。
 
   它在服务器端用起来很爽，可是在浏览器里就不会那么高效了。毕竟读取网络的文件要比本地耗费更多时间。只要它还在读取模块，浏览器载入的页面就会一直卡着不动。
@@ -376,6 +388,47 @@ function webpackJsonpCallback(data) {
 
 3. 每个模块都被构造的函数包裹。
 
+### webpack对es module模块的支持
+
+webpack里面只支持打包以下几种模块：
+
+- var，对一个变量赋值var Library = xxx
+
+- this，设置this的Library属性，var Library = xxx
+
+- commonjs，设置exports的Library属性，exports["Library"] = xxx
+
+- commonjs2，设置module.exports = xxx
+
+- amd，导出为AMD格式
+
+- umd，导出为AMD，CommonJS2，以及全局对象的一个属性
+
+并没有我们常用的es module模块，但是我们打包模块的时候，也是需要别人使用es的引入方式引入模块的是吧。
+
+那这里webpack是怎么兼容的呢？
+
+1. webpack打包后生成的是一个IIFE，这个IIFE通过一系列初始化工作之后，就会通过`__webpack_require__(0)`启动入口模块。
+
+2. webpack会在`__webpack_exports__`上添加属性`__esmodule`，判断是否是es module模块。
+
+3. 打包之后
+
+   ```javascript
+   // getDefaultExport function for compatibility with non-harmony modules
+   __webpack_require__.n = function(module) {
+       var getter = module && module.__esModule ?
+           function getDefault() { return module['default']; } :
+           function getModuleExports() { return module; };
+       __webpack_require__.d(getter, 'a', getter);
+       return getter;
+   };
+   ```
+
+   `__webpack_require__.n`会判断module是否为es模块，当`__esModule`为true的时候，标识module为es模块，那么`module.a`默认返回`module.default`，否则返回`module`。
+
+4. 当通过es模块的方式去`import`一个commonjs规范的模块时，就会把require得到的module进行一层包装，从而兼容两种情况。
+
 ### 🐥参考
 
 [模块方法 - webpack](https://webpack.docschina.org/api/module-methods/)
@@ -389,4 +442,8 @@ function webpackJsonpCallback(data) {
 [Webpack模块化实现&动态模块加载原理](https://www.xingmal.com/article/article/1245642330535497728)
 
 [webpack模块异步加载原理解析](https://juejin.im/post/5e082fc9e51d4557fd7716bf)
+
+[001.精读 js 模块化发展](https://github.com/dt-fe/weekly/blob/v2/001.%E7%B2%BE%E8%AF%BB%20js%20%E6%A8%A1%E5%9D%97%E5%8C%96%E5%8F%91%E5%B1%95.md)
+
+[webpack模块化原理-ES module](https://segmentfault.com/a/1190000010955254)
 
