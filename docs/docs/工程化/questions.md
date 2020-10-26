@@ -224,3 +224,5 @@
     对于性能监控来说，其实我们只需要调用 `performance.getEntriesByType('navigation')` 这行代码就行了。
 
     复杂一点也可以使用chrome的puppeteer api。
+
+21. **使用import时，Webpack对node_modules里的依赖会做什么**

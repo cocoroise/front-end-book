@@ -32,6 +32,7 @@
    28. **X:last-child**：伪类，选择满足 X 选择器的元素，且这个元素是其父节点的最后一个子元素。兼容性 IE9+
    29. **X:only-child**：伪类，选择满足 X 选择器的元素，且这个元素是其父元素的唯一子元素。兼容性 IE9+
    30. **X:only-of-type**：伪类，选择 X 选择的元素，**解析得到元素标签**，如果该元素没有相同类型的兄弟节点时选中它。兼容性 IE9+
+   
 31. **X:first-of-type**：伪类，选择 X 选择的元素，**解析得到元素标签**，如果该元素 是此此类型元素的第一个兄弟。选中它。兼容性 IE9+
    
 2. **css sprite 是什么,有什么优缺点**
@@ -63,7 +64,7 @@
 4. **`link`与`@import`的区别**
 
    1. `link`是 HTML 方式， `@import`是 CSS 方式
-   2. `link`最大限度支持并行下载，`@import`过多嵌套导致串行下载，出现[FOUC](http://www.bluerobot.com/web/css/fouc.asp/)
+   2. `link`最大限度支持并行下载，`@import`过多嵌套导致串行下载，出现[FOUC](https://juejin.im/entry/6844903474954502151)
    3. `link`可以通过`rel="alternate stylesheet"`指定候选样式
    4. 浏览器对`link`支持早于`@import`，可以使用`@import`对老浏览器隐藏样式
    5. `@import`必须在样式规则之前，可以在 css 文件中引用其他文件
@@ -123,4 +124,157 @@
    会有个高度为0的line box。
 
    解决方案：把内联元素转化为bfc元素，例如给span元素添加display:inline-block属性。
+
+11. **css多行省略**
+
+    https://juejin.im/entry/6844903461209767944
+
+    一行省略代码(部分浏览器需要设置宽度)：
+
+    ```css
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    ```
+
+    多行省略：
+
+    - webkit浏览器
+
+      ```css
+      overflow : hidden;
+      text-overflow: ellipsis;
+      word-break: break-all;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      ```
+
+    - 其他浏览器
+
+      ```css
+      p {
+          position:relative;
+          line-height:1.5em;
+          /* 高度为需要显示的行数*行高，比如这里我们显示两行，则为3 */
+          height:3em;
+          overflow:hidden;
+      }
+      p:after {
+          content:"...";
+          position:absolute;
+          bottom:0;
+          right:0;
+          padding: 0 5px;
+          background-color: #fff;
+      }
+      ```
+
+12. **移动端1px如何解决？**
+
+    1. 边框使用图片
+
+       - 优点：兼容方便
+
+       - 缺点：麻烦，颜色变了就要重新做一张图片，圆角模糊
+
+       ```css
+         border: 1px solid transparent;
+         border-image: url('./../../image/96.jpg') 2 repeat;
+       ```
+
+    2. 伪元素
+
+       为伪元素设置绝对定位，并且和父元素左上角对其。将伪元素的长和宽先放大2倍，然后再设置一个边框，以左上角为中心，缩放到原来的`0.5倍`。
+
+       - 优点：兼容性好，可以圆角
+
+       - 缺点：用了after伪元素，可能影响浮动
+
+       ```css
+       .setBorderAll{
+            position: relative;
+              &:after{
+                  content:" ";
+                  position:absolute;
+                  top: 0;
+                  left: 0;
+                  width: 200%;
+                  height: 200%;
+                  transform: scale(0.5);
+                  transform-origin: left top;
+                  box-sizing: border-box;
+                  border: 1px solid #E5E5E5;
+                  border-radius: 4px;
+             }
+           }
+       ```
+
+    3. 设置viewport的scale值
+
+       利用viewport+rem+js 实现
+
+       - 优点：全机型兼容，直接写1px
+
+       - 缺点：老项目改动比较大
+
+       ```html
+       <html>
+         <head>
+             <title>1px question</title>
+             <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+             <meta name="viewport" id="WebViewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">        
+             <style>
+                 html {
+                     font-size: 1px;
+                 }            
+                 * {
+                     padding: 0;
+                     margin: 0;
+                 }
+                 .top_b {
+                     border-bottom: 1px solid #E5E5E5;
+                 }
+       
+                 .a,.b {
+                             box-sizing: border-box;
+                     margin-top: 1rem;
+                     padding: 1rem;                
+                     font-size: 1.4rem;
+                 }
+       
+                 .a {
+                     width: 100%;
+                 }
+       
+                 .b {
+                     background: #f5f5f5;
+                     width: 100%;
+                 }
+             </style>
+             <script>
+                 var viewport = document.querySelector("meta[name=viewport]");
+                 //下面是根据设备像素设置viewport
+                 if (window.devicePixelRatio == 1) {
+                     viewport.setAttribute('content', 'width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no');
+                 }
+                 if (window.devicePixelRatio == 2) {
+                     viewport.setAttribute('content', 'width=device-width,initial-scale=0.5, maximum-scale=0.5, minimum-scale=0.5, user-scalable=no');
+                 }
+                 if (window.devicePixelRatio == 3) {
+                     viewport.setAttribute('content', 'width=device-width,initial-scale=0.3333333333333333, maximum-scale=0.3333333333333333, minimum-scale=0.3333333333333333, user-scalable=no');
+                 }
+                 var docEl = document.documentElement;
+                 var fontsize = 32* (docEl.clientWidth / 750) + 'px';
+                 docEl.style.fontSize = fontsize;
+             </script>
+         </head>
+         <body>
+             <div class="top_b a">下面的底边宽度是虚拟1像素的</div>
+             <div class="b">上面的边框宽度是虚拟1像素的</div>
+         </body>
+       </html>
+       ```
+
+       
 

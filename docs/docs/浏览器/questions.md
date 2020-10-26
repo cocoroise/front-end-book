@@ -163,3 +163,40 @@
    **所以插入几万个dom，怎么才能不卡顿呢？**
 
    回答：虚拟滚动
+
+7. 事件循环题
+
+   ```javascript
+   const promise1 = new Promise((resolve, reject) => {
+     setTimeout(() => {
+       resolve("success");
+       console.log("timer1");
+     }, 1000);
+     console.log("promise1里的内容");
+   });
+   const promise2 = promise1.then(() => {
+     throw new Error("error!!!");
+   });
+   console.log("promise1", promise1);
+   console.log("promise2", promise2);
+   setTimeout(() => {
+     console.log("timer2");
+     console.log("promise1", promise1);
+     console.log("promise2", promise2);
+   }, 2000);
+   ```
+
+   结果：
+
+   ```
+   'promise1里的内容'
+   'promise1' Promise{<pending>}
+   'promise2' Promise{<pending>}
+   'timer1'
+   test5.html:102 Uncaught (in promise) Error: error!!! at test.html:102
+   'timer2'
+   'promise1' Promise{<resolved>: "success"}
+   'promise2' Promise{<rejected>: Error: error!!!}
+   ```
+
+   

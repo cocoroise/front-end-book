@@ -111,3 +111,5 @@ btn.addEventListener('click', fn, false);
   [NodeList](https://developer.mozilla.org/zh-CN/docs/Web/API/NodeList) 对象是节点的集合，通常是由属性，如Node.childNodes 和 方法，如document.querySelectorAll 返回的。
 
   NodeList**不是一个数组**，是一个类似数组的对象(*Like Array Object*)。
+
+2. 事件代理的优缺点？

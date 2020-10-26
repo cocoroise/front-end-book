@@ -204,7 +204,9 @@ subClass.__proto__ = superClass;
 >
 > [【翻译】JavaScript原型继承工作原理](https://www.ituring.com.cn/article/56184)
 
+### MAP
 
+function和object的差别  - `__proto__`的作用，原型链的核心 - constructor和prototype的作用 - 原型链等式解释 - new的实现 - class的实现 
 
 ### 参考
 
