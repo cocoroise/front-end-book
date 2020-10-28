@@ -78,8 +78,6 @@
 
 
   * [**🗃算法**](docs/算法/README.md)
-
-      * [mark](docs/算法/mark.md)
       * [排序算法](docs/算法/sort.md)
       * [二叉树](docs/算法/erchashu.md)
       * [链表](docs/算法/linkNode.md)

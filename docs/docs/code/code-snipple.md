@@ -225,15 +225,10 @@ Function.prototype.apply = function(context,arr){
   return result;
 }
 
-Function.prototype.bind = function () {
-  var thatFunc = this,
-    thatArg = arguments[0];
-  var slice = Array.prototype.slice;
-  var args = slice.call(arguments, 1);
-
-  return function () {
-    var funcArgs = args.concat(slice.call(arguments));
-    return thatFunc.apply(thatArg, funcArgs);
+Function.prototype.bindFn = function (fn, ...args) {
+  let self = this;
+  return function (...fnArgs) {
+    return self.apply(fn, args.concat(fnArgs));
   };
 };
 ```
@@ -313,7 +308,7 @@ let f1 = new Foo();
 
 ### 4️⃣ koa-compose
 
-看过koa源码的人应该知道，compose方法是koa里比较核心的一个点，但是它的实现也并不复杂。它的作用主要是把中间价串联起来，通过用户手动调用 next 的方式，控制中间件的执行。
+看过koa源码的人应该知道，compose方法是koa里比较核心的一个点，但是它的实现也并不复杂。它的作用主要是把中间件串联起来，通过用户手动调用 next 的方式，控制中间件的执行。
 
 使用方式：
 

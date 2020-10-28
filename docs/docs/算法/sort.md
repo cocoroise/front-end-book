@@ -10,7 +10,7 @@ function swap(array, left, right) {
 }
 ```
 
-### 冒泡
+### 冒泡O(n2)
 
 简单粗暴，两个全数组遍历。
 
@@ -29,7 +29,7 @@ function bubbles(arr) {
 }
 ```
 
-### 快排
+### 快排O(N*logN)
 
 比较理解但是需要额外空间的一种解法，定义左数组和右数组，另外还需要一个基准值pivot，这个基准值单独处理。递归放入需要的元素。
 
@@ -52,7 +52,11 @@ function quickSort(arr) {
 }
 ```
 
-### 选择排序
+### 选择排序O(n2)
+
+第一次遍历n-1，找到最小的值和第一个数交换位置，
+
+第二次遍历n-2，找到最小的和第二个值交换位置
 
 ```javascript
 function selection(array) {
@@ -68,7 +72,9 @@ function selection(array) {
 }
 ```
 
-### 插入排序
+### 插入排序O(n2)
+
+在要排序的一组数中，假定前n-1个数已经排好序，现在将第n个数插到前面的有序数列中，使得这n个数也是排好顺序的。如此反复循环，直到全部排好顺序。
 
 ```javascript
 function insertion(array) {
@@ -108,7 +114,7 @@ function shellSort(arr) {
 }
 ```
 
-### 归并排序
+### 归并排序O(N*logN)
 
 ```javascript
 function mergeSort(arr) {

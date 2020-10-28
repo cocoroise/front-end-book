@@ -1,5 +1,17 @@
 # 算法
 
+![截屏2020-10-28 上午11.20.49](http://image.cocoroise.cn/截屏2020-10-28 上午11.20.49.png)
+
+### 强烈推荐：
+
+⭐️[labuladong的算法小抄](https://labuladong.gitbook.io/algo/)
+
+[Leetcode 题解 ](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E7%9B%AE%E5%BD%95.md)
+
+[剑指 Offer 题解](https://github.com/CyC2018/CS-Notes/blob/master/notes/%E5%89%91%E6%8C%87%20Offer%20%E9%A2%98%E8%A7%A3%20-%20%E7%9B%AE%E5%BD%95.md)
+
+### 如何刷算法题：
+
 🐼强烈推荐：[如何有效地写算法题 - 侯振宇](https://www.cnblogs.com/sskyy/p/8268976.html)
 
 **番茄时钟有两个重点**：

@@ -86,8 +86,6 @@ f1.__proto__ = Foo.prototype
 
 <img src="http://image.cocoroise.cn/20190311193622793.png" style="zoom:67%;" />
 
-
-
 ### 应用
 
 #### 1. new的实现
