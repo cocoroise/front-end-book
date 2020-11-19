@@ -4,7 +4,7 @@
 
 整理和总结前端知识点。方便自己复习。
 
-![](http://image.cocoroise.cn/all-7.31.png)
+![](http://image.cocoroise.cn/前端知识大纲10.28.png)
 
 ### 运行
 
