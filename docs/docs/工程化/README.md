@@ -8,7 +8,7 @@
 - [x] 设计模式总结
 - [x] websocket
 - [x] Webrtc
-- [ ] nginx基本使用
+- [ ] nginx使用
 - [ ] tree shaking原理
 - [ ] webpack热更新原理
 

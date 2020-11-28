@@ -58,11 +58,10 @@
     * [浏览器常见问题](docs/浏览器/questions.md) 
 
 
-  * [**🪒常用笔记**](docs/note/README.md)
-    * [Gitlab ci/cd的使用](docs/note/Gitlab-ci-cd的使用.md) 
+  * [**🪒笔记**](docs/note/README.md)
     * [《分布式缓存-原理，架构及Go语言实现》总结](docs/note/cache-book.md) 
     * [Node技术栈脑图](docs/note/Node技术栈脑图.md) 
-    * [两个脚本使用webhook部署博客](docs/note/weebhook.md) 
+    * [weikit技术内幕系列 - 第一篇](docs/note/webkit-1.md) 
 
   * [**🧸网络**](docs/network/README.md)
     * [计算机网络大纲](docs/network/计算机网络大纲.md)
@@ -75,6 +74,8 @@
     * [VueRouter history模式下的nginx配置](docs/work/vue-router-history.md)
     * [vue slot在jsx下遇到的问题及解决方法](docs/work/slots.md)
     * [聊天框之虚拟列表实现](docs/work/visualList.md)
+    * [两个脚本使用webhook部署博客](docs/work/weebhook.md) 
+    * [Gitlab ci/cd的使用](docs/work/Gitlab-ci-cd的使用.md) 
 
 
   * [**🗃算法**](docs/算法/README.md)

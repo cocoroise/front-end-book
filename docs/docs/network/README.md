@@ -6,9 +6,3 @@
 
 ![](http://image.cocoroise.cn/TCP-IP.gif)
 
-Todo:
-
-- [ ] NodeJs来一打C++拓展 - 死月
-- [ ] ThreeJs入门指南
-- [ ] Linux操作系统分析与实践
-
