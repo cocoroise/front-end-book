@@ -62,7 +62,7 @@ justify-content: flex-start | flex-end | center | space-between | space-around;
 - flex-basis
   定义了在分配多余空间之前，项目占据的主轴空间（main size）。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为auto，即项目的本来大小。
 - flex
-  flex属性是flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto。后两个属性可选。
+  flex属性是flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto,还有两个快捷值`auto` (`1 1 auto`) 和 none (`0 0 auto`)。后两个属性可选。
 - align-self
   align-self属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。
 

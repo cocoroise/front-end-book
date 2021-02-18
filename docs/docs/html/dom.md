@@ -42,8 +42,7 @@ btn.addEventListener('click', fn, false);
 
 - stopPropagation - 阻止事件冒泡
 - preventDefault - 阻止浏览器的默认行为触发，比如点击a标签打开一个页面。
-- stopImmediatePropagation - 阻止监听同一
-- 事件的其他事件监听器被调用。
+- stopImmediatePropagation - 阻止监听同一事件的其他事件监听器被调用。
 
 #### 查询节点
 

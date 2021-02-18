@@ -12,7 +12,7 @@
 1. promise的状态
 
    ```javascript
-   const promise1 = new Promise((resolve, reject) => {
+   const promise1 = new Promise((					resolve, reject) => {
      setTimeout(() => {
        resolve("success");
        console.log("timer1");

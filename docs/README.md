@@ -13,3 +13,7 @@
 小册地址：
 [front-end-book](https://cocoroise.github.io/front-end-book/)
 
+### 部署过程
+
+git push -> git web hook -> 服务器监听推送 -> 更新服务器上文件 -> 站点更新
+
