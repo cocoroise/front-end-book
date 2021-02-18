@@ -23,4 +23,4 @@
 1. node和nom 配置全局变量
 2. iterm配置oh-my-zsh
 3. 安装docsify-cli和docsify
-4. 111
+4. 1111
