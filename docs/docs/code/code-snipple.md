@@ -316,7 +316,7 @@ let f1 = new Foo();
 compose([a, b, c, ...])
 ```
 
-实现：
+原始实现：
 
 ```javascript
 function compose (middleware) {
@@ -347,6 +347,23 @@ function compose (middleware) {
         return Promise.reject(err)
       }
     }
+  }
+}
+```
+
+简单实现：
+
+```javascript
+function compose (middlewares) {
+  return ctx => {
+    const dispatch = (i) => {
+      const middleware = middlewares[i]
+      if (i === middlewares.length) {
+        return
+      }
+      return middleware(ctx, () => dispatch(i+1))
+    }
+    return dispatch(0)
   }
 }
 ```
