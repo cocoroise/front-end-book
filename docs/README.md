@@ -4,7 +4,7 @@
 
 整理和总结前端知识点。方便自己复习。
 
-![](http://image.cocoroise.cn/前端知识大纲12.15.png)
+![](http://image.cocoroise.cn/前端技术能力图谱.png)
 
 ### 运行
 

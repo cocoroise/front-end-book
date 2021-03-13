@@ -1,6 +1,7 @@
   * [**📠html**](docs/html/README.md)
       * [dom介绍和使用](docs/html/dom.md)
       * [事件冒泡，捕获和委托](docs/html/event-bubble.md)
+      * [cookie和samsite](docs/html/cookie.md)
       * [html常见问题](docs/html/questions.md)
 
 
@@ -14,6 +15,7 @@
   * [**⏰javascript**](docs/javascript/README.md)
 
       * [原型链介绍](docs/javascript/prototype.md)
+      * [this和闭包](docs/javascript/this和闭包.md)
       * [ES6笔记](docs/javascript/es6.md)
       * [js垃圾回收机制](docs/javascript/cash.md)
       * [js常见面试题](docs/javascript/questions.md)
@@ -52,9 +54,11 @@
     * [浏览器知识收集](docs/浏览器/浏览器知识点整理.md)  
     * [页面回流重绘及优化](docs/浏览器/reflow.md)  
     * [浏览器缓存](docs/浏览器/cache.md)  
+    * [跨域](docs/浏览器/cross-site.md)  
     * [浏览器事件循环](docs/浏览器/eventLoop.md) 
     * [输入url之后，浏览器做了什么?](docs/浏览器/flow.md)  
     * [关于xss攻击和csrf攻击](docs/浏览器/safe.md)
+    * [浏览器运行原理](docs/浏览器/render.md)  
     * [浏览器常见问题](docs/浏览器/questions.md) 
 
 
