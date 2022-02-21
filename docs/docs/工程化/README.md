@@ -11,4 +11,5 @@
 - [ ] nginx使用
 - [ ] tree shaking原理
 - [ ] webpack热更新原理
+- [ ] vite原理
 

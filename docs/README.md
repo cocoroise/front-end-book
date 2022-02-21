@@ -13,6 +13,16 @@
 小册地址：
 [front-end-book](https://cocoroise.github.io/front-end-book/)
 
+### 新建文档
+
+1. 创建md
+
+   > ```javascript
+   > docsify generate <path> [--sidebar _sidebar.md]
+   > ```
+
+2. 配置目录 进入_sidebar.md，配置层级和目录
+
 ### 部署过程
 
 git push -> git web hook -> 服务器监听推送 -> 更新服务器上文件 -> 站点更新文件
