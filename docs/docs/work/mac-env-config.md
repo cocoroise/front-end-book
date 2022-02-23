@@ -8,19 +8,23 @@
 4. npm
 5. vscode
 6. Item
+7. Charles
+8. Postman
 
 ### 其他软件
 
-1. onenote
+1. onenote | 笔记（感觉没语雀好用）
 2. typora ｜md格式编辑器
-3. termius ｜ 连服务器
-4. trojan ｜ vpn
-5. xmind
+3. termius ｜ 服务器管理
+4. Trojan-qt5 ｜ vpn
+5. xmind | 思维导图
 6. picGo | 图床
+7. 语雀 | 知识管理
+8. Flux | 护眼
 
 ### 环境配置
 
-1. node和nom 配置全局变量
-2. iterm配置oh-my-zsh
-3. 安装docsify-cli和docsify
-4. 1111111
+1. git配置ssh key
+2. node和npm 配置全局变量和软连
+3. iterm配置oh-my-zsh
+4. 安装docsify-cli和docsify

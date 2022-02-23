@@ -2,7 +2,7 @@
 
 ### 啥是threeJS
 
-​	Three.js是基于原生WebGL封装运行的三维引擎，在所有WebGL引擎中，Three.js是国内文资料最多、使用**最广泛**的三维引擎。![](http://image.cocoroise.cn/blog/20220221180120.png)
+​	Three.js是基于原生WebGL封装运行的三维引擎，在所有WebGL引擎中，Three.js是国内文资料最多、使用**最广泛**的三维引擎。
 
 ​    它的原作者为Mr.Doob，项目地址为：https://github.com/mrdoob/three.js/。
 
@@ -15,11 +15,14 @@
 ### 今天的目标
 
 1. 了解3D场景的基本元素
+
 2. 创建属于我们的第一个场景
+
 3. 在场景里添加物体
+
 4. 添加鼠标事件
 
-![](http://image.cocoroise.cn/blog/20220221173129.png)
+   <img src="http://image.cocoroise.cn/blog/20220221173129.png" style="zoom:50%;" />
 
 ### BEGIN！
 
