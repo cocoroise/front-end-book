@@ -81,9 +81,10 @@
     * [两个脚本使用webhook部署博客](docs/work/weebhook.md) 
     * [Gitlab ci/cd的使用](docs/work/Gitlab-ci-cd的使用.md) 
     * [新电脑环境配置记录](docs/work/mac-env-config.md) 
-* [**🎮游戏**](docs/game/README.md)
 
-  * [ThreeJS简单场景搭建](docs/game/threejs-01.md) 
+
+  * [**🎮游戏**](docs/game/README.md)
+    * [ThreeJS简单场景搭建](docs/game/threejs-01.md) 
 
 
   * [**🗃算法**](docs/算法/README.md)
