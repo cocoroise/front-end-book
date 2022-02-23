@@ -1054,3 +1054,41 @@ pre:after {
     clip: rect(2px, 350px, 66px, 30px);
   }
 }
+
+.app-name-link{
+  width: 100%;
+  position: relative;
+  color: #a18cd1 !important;
+  display: inline-block;
+}
+.app-name-link:after{
+    content: "前端知识点小册";
+    position: absolute;
+    top: .1em; 
+    left: 2.9em;
+    z-index: -1;
+    text-shadow: none;
+    /* background-image: linear-gradient(to top, #fad0c4 0%, #ffd1ff 100%); */
+    background-image:
+      linear-gradient(
+        45deg,
+        transparent 45%,
+        #fad0c4 45%,
+        rgb(235, 224, 230) 55%,
+        transparent 0
+        );
+    background-size: 0.1em 0.1em;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  
+    animation: shad-anim 40s linear infinite;
+    -webkit-animation: shad-anim 40s linear infinite;
+}
+@keyframes shad-anim {
+  0% {background-position: 0 0}
+  0% {background-position: 100% -100%}
+  }
+@-webkit-keyframes shad-anim {
+  0% {background-position: 0 0}
+  0% {background-position: 100% -100%}
+  }
