@@ -22,7 +22,7 @@
 
 4. 添加鼠标事件
 
-   <img src="http://image.cocoroise.cn/blog/20220221173129.png" style="zoom:50%;" />
+   <img src="http://image.cocoroise.cn/blog/20220221173129.png" style="zoom:30%;" />
 
 ### BEGIN！
 
@@ -40,7 +40,7 @@
 
 4. 灯光(light)
 
-   ![](http://image.cocoroise.cn/blog/20220221181929.png)
+   <img src="http://image.cocoroise.cn/blog/20220221181929.png" style="zoom:80%;" />
 
 #### 2. 创建场景
 
@@ -105,8 +105,8 @@ const group = new THREE.Group();
 for (let i = 0; i < 4; i++) {
 	let mesh = new THREE.Mesh(geometry, material); // 形状和材料
 
-	const tau = 2 * Math.PI; // One turn
-	mesh.position.x = Math.random() * 300;
+	const tau = 2 * Math.PI;
+	mesh.position.x = Math.random() * 300; // 300是实验的参数，之后会调整
 	mesh.position.y = Math.random() * 300;
 	mesh.position.z = Math.random() * 300;
 	mesh.rotation.x = Math.random() * tau;
@@ -123,7 +123,7 @@ scene.add(group);
 
 我们往场景里添加了4个小正方体，并随机设置了他们的位置和渲染的角度，现在看到的应该是下面这样：
 
-![](http://image.cocoroise.cn/blog/20220221153615.png)
+<img src="http://image.cocoroise.cn/blog/20220221153615.png" style="zoom:50%;" />
 
 #### 4. 事件控制
 
@@ -133,7 +133,7 @@ scene.add(group);
 
 ```javascript
   const t = Date.now() * 0.001;
-	const rx = Math.sin(t * 0.7) * 0.5;
+	const rx = Math.sin(t * 0.7) * 0.5; // 随机生成旋转的角度
 	const ry = Math.sin(t * 0.3) * 0.5;
 	const rz = Math.sin(t * 0.2) * 0.5;
 	group.rotation.x = rx;
@@ -167,10 +167,8 @@ document.addEventListener("mousemove", mouseFX.onMouseMove, false);
 ```javascript
 const render = () => {
 	requestAnimationFrame(render);
-	// 根据鼠标改变摄像机的角度
-	camera.position.x += (mouseX - camera.position.x) * 0.05;
-	camera.position.y += (mouseY * -1 - camera.position.y) * 0.05;
-	// 正方体自旋转的处理
+	
+	// 正方体随机自旋转
 	const t = Date.now() * 0.001;
 	const rx = Math.sin(t * 0.7) * 0.5;
 	const ry = Math.sin(t * 0.3) * 0.5;
@@ -182,17 +180,82 @@ const render = () => {
 };
 ```
 
-做完这步之后，现在正方体应该可以在没人的时候自己默默转动，有鼠标移动的时候跟随鼠标的移动而移动了。但是，物体的比例，角度，视觉还是有点奇怪，想要做到开头完美的效果，还需要继续努力。
+做完这步之后，现在正方体应该可以在没人的时候自己默默转动，有鼠标移动的时候跟随鼠标的移动而移动了。但是，物体的比例，角度，视觉还是有点奇怪，想要做到开头完美的效果，还需要继续调试它的参数。
 
-#### 5. 参数调优
+#### 5. 代码优化
 
-待补充
+##### 增加形状&数量
 
+使用不同的api随机生成不同的形状
 
+```javascript
+const geometry = new THREE.BoxBufferGeometry(cubeSize, cubeSize, cubeSize); // 正方形
+const circle = new THREE.CircleBufferGeometry(150, 50); // 圆形
+const cone = new THREE.ConeBufferGeometry(200, 50); // 圆锥
+const octahedron = new THREE.OctahedronBufferGeometry(170); // 八面体
+
+const material = new THREE.MeshNormalMaterial();
+const group = new THREE.Group();
+for (let i = 0; i < 200; i++) {
+	const randomShape = i % 4; // 随机生成以上四种形状
+	let mesh = null;
+	if (randomShape === 1) {
+		mesh = new THREE.Mesh(geometry, material); 
+	} else if(randomShape===2){
+		mesh = new THREE.Mesh(cone, material); 
+	}else if(randomShape===3){
+		mesh = new THREE.Mesh(circle, material);
+	}else{
+		mesh = new THREE.Mesh(octahedron, material);
+	}
+```
+
+##### 调整视角
+
+```javascript
+  const dist = farDist / 3; // farDist最远距离
+	const distDouble = dist * 2;
+	const tau = 2 * Math.PI; // 转一圈
+
+	mesh.position.x = Math.random() * distDouble - dist;
+	mesh.position.y = Math.random() * distDouble - dist;
+	mesh.position.z = Math.random() * distDouble - dist;
+	mesh.rotation.x = Math.random() * tau;
+	mesh.rotation.y = Math.random() * tau;
+	mesh.rotation.z = Math.random() * tau;
+```
+
+##### 鼠标移动
+
+```javascript
+const render = () => {
+	requestAnimationFrame(render);
+	// 根据鼠标移动镜头的视角
+	camera.position.x += (mouseX - camera.position.x) * 0.05;
+	camera.position.y += (mouseY * -1 - camera.position.y) * 0.05;
+	
+	const t = Date.now() * 0.001;
+	const rx = Math.sin(t * 0.7) * 0.5;
+	const ry = Math.sin(t * 0.3) * 0.5;
+	const rz = Math.sin(t * 0.2) * 0.5;
+	group.rotation.x = rx;
+	group.rotation.y = ry;
+	group.rotation.z = rz;
+	renderer.render(scene, camera);
+};
+// 开始渲染场景
+render();
+```
+
+最后，我们的作品就是这个样子啦。
+
+在没有鼠标的时候随机旋转视角，有鼠标移动的时候跟随鼠标移动视角。
+
+<img src="http://image.cocoroise.cn/image-20220227234344421.png" style="zoom:70%;" />
 
 ### END
 
-附上一些链接
+附上一些参考资料：
 
 最终版demo：https://codepen.io/ChristianPrint/pen/bGbjyzx
 
