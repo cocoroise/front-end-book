@@ -40,7 +40,7 @@
 
 4. 灯光(light)
 
-   <img src="http://image.cocoroise.cn/blog/20220221181929.png" style="zoom:80%;" />
+   <img src="http://image.cocoroise.cn/blog/20220221181929.png" style="zoom:50%;" />
 
 #### 2. 创建场景
 
@@ -123,7 +123,7 @@ scene.add(group);
 
 我们往场景里添加了4个小正方体，并随机设置了他们的位置和渲染的角度，现在看到的应该是下面这样：
 
-<img src="http://image.cocoroise.cn/blog/20220221153615.png" style="zoom:50%;" />
+<img src="http://image.cocoroise.cn/blog/20220221153615.png" style="zoom:30%;" />
 
 #### 4. 事件控制
 
@@ -228,20 +228,13 @@ for (let i = 0; i < 200; i++) {
 ##### 鼠标移动
 
 ```javascript
+// 在render函数里加上这个
 const render = () => {
 	requestAnimationFrame(render);
 	// 根据鼠标移动镜头的视角
 	camera.position.x += (mouseX - camera.position.x) * 0.05;
 	camera.position.y += (mouseY * -1 - camera.position.y) * 0.05;
 	
-	const t = Date.now() * 0.001;
-	const rx = Math.sin(t * 0.7) * 0.5;
-	const ry = Math.sin(t * 0.3) * 0.5;
-	const rz = Math.sin(t * 0.2) * 0.5;
-	group.rotation.x = rx;
-	group.rotation.y = ry;
-	group.rotation.z = rz;
-	renderer.render(scene, camera);
 };
 // 开始渲染场景
 render();
@@ -251,7 +244,7 @@ render();
 
 在没有鼠标的时候随机旋转视角，有鼠标移动的时候跟随鼠标移动视角。
 
-<img src="http://image.cocoroise.cn/image-20220227234344421.png" style="zoom:70%;" />
+<img src="http://image.cocoroise.cn/image-20220227234344421.png" style="zoom:30%;" />
 
 ### END
 
