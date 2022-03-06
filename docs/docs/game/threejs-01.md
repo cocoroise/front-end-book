@@ -56,7 +56,7 @@
 
 #### 3. 添加物体
 
-![](http://image.cocoroise.cn/carbon (1).png)
+![](http://image.cocoroise.cn/carbon-1.png)
 
 我们往场景里添加了4个小正方体，并随机设置了他们的位置和渲染的角度，现在看到的应该是下面这样：
 
@@ -68,15 +68,15 @@
 
 自旋转通过在render方法中动态改变方块的角度，由于我们当初把他们加入了同一个组，所以只需要改变组的rotate属性。
 
-![](http://image.cocoroise.cn/carbon (2).png)
+![](http://image.cocoroise.cn/carbon-2.png)
 
 转动视角我们需要获取鼠标的位置，计算出摄像机需要转动的角度，然后改变它的x,y,z参数。
 
-![](http://image.cocoroise.cn/carbon (3).png)
+![](http://image.cocoroise.cn/carbon-3.png)
 
 然后在render函数上增加每帧改变摄像角度的处理，现在的render函数已经变成了如下这样：
 
-![](http://image.cocoroise.cn/carbon (4).png)
+![](http://image.cocoroise.cn/carbon-4.png)
 
 做完这步之后，现在正方体应该可以在没人的时候自己默默转动，有鼠标移动的时候跟随鼠标的移动而移动了。但是，物体的比例，角度，视觉还是有点奇怪，想要做到开头完美的效果，还需要继续调试它的参数。
 
@@ -86,15 +86,15 @@
 
 使用不同的api随机生成不同的形状
 
-![](http://image.cocoroise.cn/carbon (5).png)
+![](http://image.cocoroise.cn/carbon-5.png)
 
 ##### 调整视角
 
-![](http://image.cocoroise.cn/carbon (6).png)
+![](http://image.cocoroise.cn/carbon-6.png)
 
 ##### 鼠标移动
 
-![](http://image.cocoroise.cn/carbon (7).png)
+![](http://image.cocoroise.cn/carbon-7.png)
 
 最后，我们的作品就是这个样子啦。
 
