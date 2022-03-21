@@ -22,7 +22,7 @@
 
 4. 添加鼠标事件
 
-   <img src="http://image.cocoroise.cn/blog/20220221173129.png" style="zoom:30%;" />
+   <img src="http://image.cocoroise.cn/blog/20220221173129.png" />
 
 ### BEGIN！
 
@@ -40,7 +40,7 @@
 
 4. 灯光(light)
 
-   <img src="http://image.cocoroise.cn/blog/20220221181929.png" style="zoom:50%;" />
+   <img src="http://image.cocoroise.cn/blog/20220221181929.png" />
 
 #### 2. 创建场景
 
@@ -60,7 +60,7 @@
 
 我们往场景里添加了4个小正方体，并随机设置了他们的位置和渲染的角度，现在看到的应该是下面这样：
 
-<img src="http://image.cocoroise.cn/blog/20220221153615.png" style="zoom:30%;" />
+<img src="http://image.cocoroise.cn/blog/20220221153615.png" />
 
 #### 4. 事件控制
 
@@ -100,7 +100,7 @@
 
 在没有鼠标的时候随机旋转视角，有鼠标移动的时候跟随鼠标移动视角。
 
-<img src="http://image.cocoroise.cn/image-20220227234344421.png" style="zoom:30%;" />
+<img src="http://image.cocoroise.cn/image-20220227234344421.png" />
 
 ### END
 

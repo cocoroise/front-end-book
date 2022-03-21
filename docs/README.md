@@ -15,17 +15,21 @@
 
 ### 新建文档
 
-1. 创建md
-
-   > ```javascript
-   > docsify generate <path> [--sidebar _sidebar.md]
-   > ```
+1. 新建一个md文件
 
 2. 配置目录 进入_sidebar.md，配置层级和目录
 
 ### 部署过程
 
 git push -> git web hook -> 服务器监听推送 -> 更新服务器上文件 -> 站点更新文件
+
+
+
+### 小册更新记录
+
+2022.3.21 -更新《ts使用记录》
+
+
 
 
 
